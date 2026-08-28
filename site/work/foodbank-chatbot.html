@@ -104,9 +104,9 @@
     /* Slide content entrance (subtle, staggered per slide) */
     [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
     [data-anim].in { opacity: 1; transform: none; }
-    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; scroll-behavior: smooth; }
+    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; scroll-behavior: smooth; }
     .carousel::-webkit-scrollbar { display: none; }
-    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; scrollbar-width: none; }
+    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; overflow-y: auto; scrollbar-width: none; }
     .carousel-slide::-webkit-scrollbar { display: none; }
     .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: safe center; max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.5rem 4.5rem; }
     @media (max-width: 640px) { .slide-inner { padding: 1rem 1rem 4.5rem; } }
@@ -412,7 +412,6 @@
 
     <!-- NAV -->
     <nav class="slide-nav" aria-label="Slide navigation">
-      <button class="nav-arrow nav-auto" id="autoBtn" aria-label="Pause auto-scroll" aria-pressed="true"><i class="fa-solid fa-pause"></i></button>
       <button class="nav-arrow" id="prevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
       <span class="nav-counter" id="counter">1 / 7</span>
       <div id="dots" style="display:flex;gap:6px;"></div>
@@ -457,52 +456,18 @@
     }, { root: carousel, threshold: 0.55 });
     slides.forEach(s => obs.observe(s));
 
-    document.getElementById('prevBtn').onclick = () => { if (cur > 0) go(cur - 1); pauseAuto(6000); };
-    document.getElementById('nextBtn').onclick = () => { if (cur < total - 1) go(cur + 1); pauseAuto(6000); };
+    document.getElementById('prevBtn').onclick = () => { if (cur > 0) go(cur - 1); };
+    document.getElementById('nextBtn').onclick = () => { if (cur < total - 1) go(cur + 1); };
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight') { go(cur + 1); pauseAuto(6000); }
-      if (e.key === 'ArrowLeft') { go(cur - 1); pauseAuto(6000); }
+      if (e.key === 'ArrowRight') go(cur + 1);
+      if (e.key === 'ArrowLeft') go(cur - 1);
     });
 
-    /* Slow auto-scroll with pause-on-interaction + play/pause toggle */
+    /* Show the dot-nav only while the carousel is on screen; otherwise fade it out */
     const slideNavEl = document.querySelector('.slide-nav');
-    const autoBtn = document.getElementById('autoBtn');
-    let autoOn = true, userPaused = false, resumeTimer = null, autoTimer = null;
-    const AUTOSPEED = 4500;
-    const autoTick = () => { if (autoOn && !userPaused) go((cur + 1) % total); };
-    const startAuto = () => { if (!autoTimer) autoTimer = setInterval(autoTick, AUTOSPEED); };
-    const stopAuto = () => { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } };
-    const setAuto = (on) => {
-      autoOn = on;
-      if (autoBtn) {
-        autoBtn.innerHTML = on ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
-        autoBtn.setAttribute('aria-pressed', String(on));
-        autoBtn.setAttribute('aria-label', on ? 'Pause auto-scroll' : 'Resume auto-scroll');
-      }
-      if (on) startAuto(); else stopAuto();
-    };
-    const pauseAuto = (ms) => {
-      userPaused = true;
-      clearTimeout(resumeTimer);
-      if (ms) resumeTimer = setTimeout(() => { userPaused = false; }, ms);
-    };
-    carousel.addEventListener('mouseenter', () => pauseAuto(0));
-    carousel.addEventListener('mouseleave', () => pauseAuto(2500));
-    carousel.addEventListener('wheel', () => pauseAuto(6000), { passive: true });
-    carousel.addEventListener('touchstart', () => pauseAuto(6000), { passive: true });
-    carousel.addEventListener('pointerdown', () => pauseAuto(6000));
-    if (autoBtn) autoBtn.addEventListener('click', () => { setAuto(!autoOn); if (autoOn) userPaused = false; });
-    dotsWrap.addEventListener('click', () => pauseAuto(6000));
-    startAuto();
-
-    /* Show the dot-nav only while the carousel is on screen; pause auto when off-screen */
     const navIO = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        slideNavEl.classList.toggle('nav-hidden', !e.isIntersecting);
-        if (e.isIntersecting) { if (autoOn) startAuto(); }
-        else stopAuto();
-      });
+      entries.forEach(e => slideNavEl.classList.toggle('nav-hidden', !e.isIntersecting));
     }, { threshold: 0.15 });
     navIO.observe(carousel);
 

@@ -130,8 +130,7 @@
     .side-nav a:hover .lbl { opacity: 1; color: #9A9A9A; }
     .side-nav a.active .lbl { opacity: 1; color: #fff; }
     @media (max-width: 1023px) {
-      .side-nav { transition: opacity 0.4s ease; }
-      .side-nav.tb-hidden { opacity: 0; pointer-events: none; }
+      .side-nav { display: none; }
     }
   </style>
 </head>
@@ -279,9 +278,8 @@
         <p class="sl"><span class="n"># 02</span> / case studies</p>
         <div class="flex items-end justify-between gap-4 mb-3">
           <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em]">Proof over promises<span class="text-accent">.</span></h2>
-          <button id="cs-auto-toggle" class="cs-auto-btn" aria-label="Pause auto-scroll" aria-pressed="true"><i class="fa-solid fa-pause"></i></button>
         </div>
-        <p class="text-muted max-w-2xl mb-12">Selected work with verified outcomes. Expand any card for the numbers. Auto-scrolls &mdash; hover, drag, or pause to read.</p>
+        <p class="text-muted max-w-2xl mb-12">Selected work with verified outcomes. Expand any card for the numbers. Scroll or drag to explore.</p>
         <div class="relative scroll-row-wrap cs-wrap">
           <button class="cs-arrow" style="left:-2px" data-dir="prev" aria-label="Previous case study"><i class="fa-solid fa-chevron-left"></i></button>
           <button class="cs-arrow" style="right:-2px" data-dir="next" aria-label="Next case study"><i class="fa-solid fa-chevron-right"></i></button>
@@ -674,11 +672,10 @@
     }));
   }
 
-  /* Case study carousel (manual arrows + slow auto-scroll, pause on interaction) */
+  /* Case study carousel (manual arrows only) */
   const csRow = document.getElementById('cs-grid');
   if (csRow) {
     const csArrows = document.querySelectorAll('.cs-arrow');
-    const toggleBtn = document.getElementById('cs-auto-toggle');
     let csStep = 340;
     const updateStep = () => { const first = csRow.querySelector('.cs-card'); csStep = first ? first.offsetWidth + 16 : 340; };
     const updateArrows = () => {
@@ -692,62 +689,19 @@
     csArrows.forEach(b => b.addEventListener('click', () => {
       updateStep();
       csRow.scrollBy({ left: b.dataset.dir === 'next' ? csStep : -csStep, behavior: 'smooth' });
-      pauseAuto(4000);
     }));
     csRow.addEventListener('scroll', updateArrows);
     window.addEventListener('resize', () => { updateStep(); updateArrows(); });
 
-    /* Slow auto-scroll with pause-on-interaction */
-    let autoOn = true;
-    let userPaused = false;
-    let resumeTimer = null;
-    let autoTimer = null;
-    const SPEED = 2400;
-    const tick = () => {
-      if (!autoOn || userPaused) return;
-      updateStep();
-      const atEnd = csRow.scrollLeft + csRow.clientWidth >= csRow.scrollWidth - 2;
-      if (atEnd) csRow.scrollTo({ left: 0, behavior: 'smooth' });
-      else csRow.scrollBy({ left: csStep, behavior: 'smooth' });
-    };
-    const startAuto = () => { if (!autoTimer) autoTimer = setInterval(tick, SPEED); };
-    const stopAuto = () => { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } };
-    const setAuto = (on) => {
-      autoOn = on;
-      if (toggleBtn) {
-        toggleBtn.innerHTML = on ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
-        toggleBtn.setAttribute('aria-pressed', String(on));
-        toggleBtn.setAttribute('aria-label', on ? 'Pause auto-scroll' : 'Resume auto-scroll');
-      }
-      if (on) startAuto(); else stopAuto();
-    };
-    const pauseAuto = (ms) => {
-      userPaused = true;
-      clearTimeout(resumeTimer);
-      if (ms) resumeTimer = setTimeout(() => { userPaused = false; }, ms);
-    };
-    /* Pause while the user reads/interacts; resume after idle */
-    csRow.addEventListener('mouseenter', () => pauseAuto(0));
-    csRow.addEventListener('mouseleave', () => pauseAuto(1600));
-    csRow.addEventListener('wheel', () => pauseAuto(4500), { passive: true });
-    csRow.addEventListener('touchstart', () => pauseAuto(4500), { passive: true });
-    csRow.addEventListener('pointerdown', () => pauseAuto(4500));
-
-    if (toggleBtn) toggleBtn.addEventListener('click', () => setAuto(!autoOn));
-
     updateStep();
     updateArrows();
-    startAuto();
   }
 
-  /* Side nav: active section highlighting + mobile fade in/out per section */
+  /* Side nav: active section highlighting (desktop vertical strip) */
   const sideNav = document.querySelector('.side-nav');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.side-nav a');
   let activeSection = null;
-  let navHideTimer = null;
-  const isMobile = () => window.matchMedia('(max-width: 1023px)').matches;
-  const showNav = () => { if (sideNav) sideNav.classList.remove('tb-hidden'); clearTimeout(navHideTimer); };
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.target.id !== activeSection) {
@@ -755,23 +709,10 @@
         navLinks.forEach(link => link.classList.remove('active'));
         const active = document.querySelector('.side-nav a[data-section="' + entry.target.id + '"]');
         if (active) active.classList.add('active');
-        if (isMobile()) showNav();   /* fade the strip back in at each new section */
       }
     });
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
-
-  /* On mobile, fade the section strip out when idle, back in on any scroll/touch */
-  if (sideNav) {
-    const pokeNav = () => {
-      showNav();
-      clearTimeout(navHideTimer);
-      navHideTimer = setTimeout(() => sideNav.classList.add('tb-hidden'), 2500);
-    };
-    ['scroll', 'touchstart', 'pointerdown', 'wheel', 'keydown'].forEach(ev =>
-      window.addEventListener(ev, () => { if (isMobile()) pokeNav(); }, { passive: true })
-    );
-  }
 
   /* Side nav: smooth scroll on click */
   navLinks.forEach(link => {
