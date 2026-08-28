@@ -1,6 +1,11 @@
 # Dependencies (only used for local verification scripts)
 node_modules/
 
+# Local verification scripts / dev deps (not needed for the static deploy)
+package.json
+package-lock.json
+site/_shot.cjs
+
 # Local dev / verification artifacts
 debug.js
 screenshots/
