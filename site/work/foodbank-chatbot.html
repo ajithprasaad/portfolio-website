@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Food Bank Customer Service Automation — Ajith Iyer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0A0A0A', surface: '#141414', 'surface-2': '#1C1C1C',
+            line: '#262626', muted: '#9A9A9A', 'muted-2': '#6B6B6B',
+            accent: '#FF4D3D', 'accent-hover': '#E83C2C'
+          },
+          fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['Inter', 'sans-serif'] },
+          maxWidth: { container: '1200px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A0A0A; color: #9A9A9A; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    ::selection { background: #FF4D3D; color: #fff; }
+    .container-x { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; }
+    @media (max-width: 640px) { .container-x { padding-inline: 1rem; } }
+
+    /* === HEADER === */
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 56px; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border-bottom: 1px solid #262626; display: flex; align-items: center; }
+    .site-header nav { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .site-header a.wordmark { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 1.125rem; letter-spacing: -0.02em; text-decoration: none; }
+    .site-header a.wordmark span { color: #FF4D3D; }
+    .site-header .header-links { display: flex; align-items: center; gap: 1rem; }
+    .site-header .header-links a { font-size: 0.875rem; color: #6B6B6B; text-decoration: none; transition: color 0.15s; }
+    .site-header .header-links a:hover { color: #fff; }
+    .site-header .cta-btn { background: #FF4D3D; color: #fff; font-size: 0.875rem; font-weight: 500; padding: 0.375rem 0.75rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .site-header .cta-btn:hover { background: #E83C2C; }
+    @media (max-width: 640px) { .site-header .header-links a:not(.cta-btn) { display: none; } }
+
+    /* === CONTEXT HERO === */
+    .context-section { position: relative; z-index: 10; overflow: hidden; }
+    .context-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .context-bg::before {
+      content: ''; position: absolute; inset: -15%;
+      background:
+        radial-gradient(ellipse at 50% -10%, #171717 0%, #0A0A0A 55%),
+        radial-gradient(circle at 22% 28%, rgba(255,77,61,0.12) 0%, transparent 42%),
+        radial-gradient(circle at 82% 72%, rgba(255,77,61,0.07) 0%, transparent 38%);
+      animation: bgDrift 26s ease-in-out infinite alternate;
+    }
+    @keyframes bgDrift { from { transform: scale(1) translate3d(0,0,0); } to { transform: scale(1.06) translate3d(0,-2%,0); } }
+    .context-bg .particle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); animation: floatUp linear infinite; }
+    @keyframes floatUp { from { transform: translateY(0); opacity: 0; } 12% { opacity: 0.6; } 88% { opacity: 0.6; } to { transform: translateY(-130px); opacity: 0; } }
+
+    .content-shell { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; position: relative; z-index: 1; }
+    @media (max-width: 640px) { .content-shell { padding-inline: 1rem; } }
+
+    .context-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: clamp(5rem, 10vw, 7rem) 0 clamp(2.5rem, 6vw, 4rem); }
+    @media (max-width: 640px) { .context-inner { padding: 3.5rem 0 1.5rem; } }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: #9A9A9A; text-decoration: none; transition: color 0.2s, gap 0.2s; margin-bottom: 1.75rem; }
+    .back-btn:hover { color: #fff; gap: 0.65rem; }
+    .back-btn i { font-size: 0.7rem; }
+    .context-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #FF4D3D; font-weight: 500; text-shadow: 0 0 18px rgba(255,77,61,0.35); }
+    .context-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.02; letter-spacing: -0.02em; margin-top: 1rem; }
+    .context-title .period { color: #FF4D3D; text-shadow: 0 0 24px rgba(255,77,61,0.45); }
+    .context-subtitle { font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: #C4C4C4; margin-top: 1.25rem; line-height: 1.6; max-width: 600px; }
+    .context-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    @media (max-width: 640px) {
+      .context-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+      .context-subtitle { font-size: 0.95rem; margin-top: 0.875rem; line-height: 1.5; }
+      .context-tags { margin-top: 1rem; gap: 0.375rem; }
+    }
+    .context-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; background: rgba(20,20,20,0.5); transition: border-color 0.2s, color 0.2s; }
+    .context-tags span:hover { border-color: #FF4D3D; color: #fff; }
+    .context-blurb { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #1C1C1C; max-width: 620px; }
+    .context-blurb-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; margin-bottom: 0.75rem; }
+    .context-blurb-label .n { color: #FF4D3D; }
+    .context-blurb p { font-size: 0.9rem; color: #6B6B6B; line-height: 1.7; }
+    @media (max-width: 640px) {
+      .context-blurb { margin-top: 1.25rem; padding-top: 1rem; }
+      .context-blurb p { font-size: 0.8rem; line-height: 1.6; }
+    }
+
+    /* Context entrance (plays once on load) */
+    .context-inner > * { opacity: 0; transform: translateY(16px); animation: ctxUp 0.6s ease-out forwards; }
+    .context-eyebrow { animation-delay: 0.05s; }
+    .context-title { animation-delay: 0.15s; }
+    .context-subtitle { animation-delay: 0.28s; }
+    .context-tags { animation-delay: 0.4s; }
+    .context-blurb { animation-delay: 0.52s; }
+    @keyframes ctxUp { to { opacity: 1; transform: none; } }
+
+    /* === CAROUSEL === */
+    .carousel-wrap { position: relative; z-index: 20; max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; padding-bottom: 4rem; }
+    @media (max-width: 640px) { .carousel-wrap { padding-inline: 1rem; } }
+
+    /* Slide content entrance (subtle, staggered per slide) */
+    [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    [data-anim].in { opacity: 1; transform: none; }
+    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; }
+    .carousel::-webkit-scrollbar { display: none; }
+    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+    .carousel-slide::-webkit-scrollbar { display: none; }
+    .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: center; max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+    @media (max-width: 640px) { .slide-inner { padding: 1rem; } }
+    .slide-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
+    .slide-top .bx { color: #FF4D3D; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; }
+    .slide-top .label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; }
+    .slide-top .rule { flex: 1; height: 1px; background: #1C1C1C; }
+
+    /* --- PROBLEM: accent bar + larger text --- */
+    .slide-problem { border-left: 4px solid #FF4D3D; padding-left: 1.5rem; }
+    .slide-problem p { color: #E8E8E8; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.6; font-weight: 500; }
+    .slide-problem p + p { margin-top: 1.25rem; }
+
+    /* --- ANALYSIS: data points --- */
+    .analysis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    @media (max-width: 640px) { .analysis-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+    .analysis-item .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1; }
+    .analysis-item .desc { color: #BDBDBD; font-size: 0.95rem; line-height: 1.55; margin-top: 0.5rem; }
+
+    /* --- APPROACH: step row --- */
+    .approach-steps { display: flex; flex-direction: column; gap: 1rem; }
+    @media (min-width: 768px) { .approach-steps { flex-direction: row; gap: 0; } }
+    .approach-step { display: flex; gap: 1rem; align-items: flex-start; }
+    @media (min-width: 768px) { .approach-step { flex: 1; } }
+    .approach-step .idx { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: 0.85rem; flex-shrink: 0; margin-top: 0.15rem; }
+    .approach-step h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; }
+    .approach-step p { color: #9A9A9A; font-size: 0.9rem; line-height: 1.6; margin-top: 0.375rem; }
+    @media (min-width: 768px) {
+      .approach-step + .approach-step { border-left: 1px solid #1C1C1C; padding-left: 1.5rem; margin-left: 1.5rem; }
+    }
+
+    /* --- EVALUATION: two columns --- */
+    .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 640px) { .eval-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+    .eval-col { background: #141414; border: 1px solid #262626; border-radius: 14px; padding: 1.5rem; }
+    .eval-col h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; }
+    .eval-col p { color: #9A9A9A; font-size: 0.92rem; line-height: 1.65; }
+
+    /* --- OUTCOME: metrics hero (no box) --- */
+    .outcome-metrics { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-bottom: 1.25rem; }
+    .outcome-metrics .metric .value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: clamp(2.75rem, 6vw, 4.5rem); line-height: 1; }
+    .outcome-metrics .metric .cap { color: #9A9A9A; font-size: 0.9rem; margin-top: 0.5rem; }
+    .outcome-note { color: #BDBDBD; font-size: 1rem; line-height: 1.65; max-width: 560px; }
+
+    /* --- REFLECTIONS: light --- */
+    .reflect-body { max-width: 620px; }
+    .reflect-body p { color: #BDBDBD; font-size: 1rem; line-height: 1.7; }
+    .reflect-body p + p { margin-top: 1.25rem; }
+    .reflect-stack-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #6B6B6B; margin: 1.75rem 0 0.75rem; }
+    .reflect-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .reflect-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; }
+
+    /* === PROTOTYPE === */
+    .proto-card { background: #141414; border: 1px solid #262626; border-radius: 16px; overflow: hidden; }
+    .proto-top { padding: 1.25rem 1.5rem 0; }
+    .proto-main { display: grid; grid-template-columns: 3fr 2fr; gap: 1px; background: #262626; margin-top: 1.25rem; }
+    @media (max-width: 768px) { .proto-main { grid-template-columns: 1fr; } }
+    .proto-pane { padding: 1rem; background: #141414; }
+    .proto-pane-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #FF4D3D; margin-bottom: 0.625rem; font-weight: 500; }
+    .proto-caption { font-size: 11px; color: #6B6B6B; text-align: center; padding: 0.625rem 1rem; }
+
+    /* Mobile tab switcher */
+    .proto-tabs { display: none; }
+    @media (max-width: 768px) {
+      .proto-tabs { display: flex; gap: 0.5rem; padding: 0.75rem 1rem 0; }
+      .proto-tab { flex: 1; text-align: center; font-size: 12px; font-weight: 500; padding: 0.5rem; border-radius: 8px; border: 1px solid #262626; color: #9A9A9A; cursor: pointer; background: #141414; transition: all 0.15s; }
+      .proto-tab.active { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
+      .proto-main { display: block; }
+      .proto-pane { display: none; }
+      .proto-pane.active { display: block; }
+    }
+
+    /* === CHAT MOCKUP === */
+    .chat-win { background: #0A0A0A; border: 1px solid #262626; border-radius: 12px; overflow: hidden; }
+    .chat-bar { background: #1C1C1C; border-bottom: 1px solid #262626; padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.375rem; }
+    .chat-bar .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; }
+    .chat-bar span { font-size: 12px; font-weight: 500; color: #fff; }
+    .chat-bar .online { margin-left: auto; font-size: 10px; color: #6B6B6B; }
+    .chat-msgs { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .chat-msg { max-width: 82%; opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease, transform 0.35s ease; }
+    .chat-msg.vis { opacity: 1; transform: translateY(0); }
+    .chat-msg.user { align-self: flex-end; }
+    .chat-msg.user .bub { background: #FF4D3D; color: #fff; border-bottom-right-radius: 4px; }
+    .chat-msg.bot { align-self: flex-start; }
+    .chat-msg.bot .bub { background: #1C1C1C; color: #fff; border: 1px solid #262626; border-bottom-left-radius: 4px; }
+    .bub { padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 13px; line-height: 1.45; }
+    .conf { display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem; font-size: 10px; color: #22c55e; }
+    .conf .bars { display: inline-flex; gap: 2px; }
+    .conf .bars i { width: 3px; height: 9px; border-radius: 1px; background: #22c55e; display: inline-block; }
+    .chat-input { background: #1C1C1C; border-top: 1px solid #262626; padding: 0.5rem 0.75rem; color: #6B6B6B; font-size: 12px; }
+
+    /* === ARCHITECTURE SVG === */
+    .arch-svg { width: 100%; height: auto; min-width: 0; }
+    .arch-svg .node { opacity: 0; transition: opacity 0.45s ease; }
+    .arch-svg .node.vis { opacity: 1; }
+    .arch-svg .arr { opacity: 0; transition: opacity 0.35s ease; }
+    .arch-svg .arr.vis { opacity: 1; }
+
+    /* === NAV === */
+    .slide-nav { position: absolute; bottom: 0.75rem; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; align-items: center; gap: 0.625rem; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border: 1px solid #262626; border-radius: 9999px; padding: 0.5rem 1rem; }
+    .slide-nav button { border: none; cursor: pointer; font-size: 12px; }
+    .nav-arrow { width: 28px; height: 28px; border-radius: 50%; background: #141414; border: 1px solid #262626; color: #fff; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+    .nav-arrow:hover { border-color: #FF4D3D; color: #FF4D3D; }
+    .nav-arrow:disabled { opacity: 0.25; cursor: default; }
+    .nav-counter { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: #6B6B6B; min-width: 30px; text-align: center; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: #262626; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+    .nav-dot.active { background: #FF4D3D; transform: scale(1.3); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chat-msg, .arch-svg .node, .arch-svg .arr { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .context-bg::before, .context-bg .particle { animation: none !important; }
+      .context-inner > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+      [data-anim] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <nav class="container-x">
+      <a href="../index.html" class="wordmark">Ajith Iyer<span>.</span></a>
+      <div class="header-links">
+        <a href="../index.html#work">Work</a>
+        <a href="../index.html#contact" class="cta-btn">Get in touch</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTEXT HERO -->
+  <section class="context-section" id="context">
+    <div class="context-bg">
+      <span class="particle" style="width:5px;height:5px;left:12%;top:78%;animation-duration:19s;"></span>
+      <span class="particle" style="width:7px;height:7px;left:68%;top:82%;animation-duration:23s;animation-delay:3s;"></span>
+      <span class="particle" style="width:4px;height:4px;left:45%;top:90%;animation-duration:17s;animation-delay:6s;"></span>
+    </div>
+    <div class="content-shell">
+      <div class="context-inner">
+        <a class="back-btn" href="../index.html#work"><i class="fa-solid fa-arrow-left"></i> Back to work</a>
+        <p class="context-eyebrow">proj_01 &middot; AI &amp; LLMOps</p>
+        <h1 class="context-title">Food Bank Customer<br />Service Automation<span class="period">.</span></h1>
+        <p class="context-subtitle">A RAG-based chatbot that answers the Capital Area Food Bank's repetitive support questions, built from historical JIRA tickets with intelligent triage and human handoff.</p>
+        <div class="context-tags">
+          <span>RAG</span><span>ChromaDB</span><span>DeepSeek</span><span>Streamlit</span><span>Python</span>
+        </div>
+        <div class="context-blurb">
+          <p class="context-blurb-label"><span class="n">00</span> / context</p>
+          <p>The Capital Area Food Bank is the largest hunger-relief organization in the Washington, DC metro area. In 2020, COVID-19 upended operations overnight: fresh produce distribution surged from 2 million to 6.4 million pounds, and total donations exceeded 32 million pounds, roughly 78 million meals across 12 warehouses. The organization needed to scale direct service while running with 40% fewer volunteers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAROUSEL -->
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+
+      <!-- 1: PROBLEM -->
+      <div class="carousel-slide" data-i="0">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">01</span><span class="label">Problem</span><span class="rule"></span></div>
+          <div class="slide-problem">
+            <p data-anim>Front-line staff were spending hours each day answering the same questions: order status, volunteer scheduling windows, donation drop-off procedures.</p>
+            <p data-anim>Forty percent of tickets required escalation to already-at-capacity specialists. Information was scattered across JIRA, email, and tribal knowledge. With no self-serve option, a volunteer with a simple scheduling question waited in the same queue as a complex logistics issue.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2: ANALYSIS -->
+      <div class="carousel-slide" data-i="1">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">02</span><span class="label">Situation analysis</span><span class="rule"></span></div>
+          <div class="analysis-grid">
+            <div class="analysis-item" data-anim><div class="num">60%</div><div class="desc">of tickets were repeat questions answerable from existing documentation. The knowledge existed, but retrieval was the bottleneck.</div></div>
+            <div class="analysis-item" data-anim><div class="num">40%</div><div class="desc">escalation rate correlated with ticket complexity, not staff skill. Specialists were flooded with routinizable work.</div></div>
+            <div class="analysis-item" data-anim><div class="num">3&times;</div><div class="desc">increase in average first-response time during peak periods as volume outpaced capacity.</div></div>
+          </div>
+          <p data-anim style="color:#9A9A9A;margin-top:1.75rem;max-width:560px;line-height:1.65;">The root cause wasn't insufficient staff. It was fragmented information with no retrieval mechanism.</p>
+        </div>
+      </div>
+
+      <!-- 3: APPROACH -->
+      <div class="carousel-slide" data-i="2">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">03</span><span class="label">Approach</span><span class="rule"></span></div>
+          <div class="approach-steps">
+            <div class="approach-step" data-anim><span class="idx">01</span><div><h4>RAG over fine-tuning</h4><p>The knowledge base evolves constantly, and answers must stay grounded in verifiable past resolutions, not creatively generated.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">02</span><div><h4>Multi-provider LLMs</h4><p>DeepSeek as primary, with OpenAI and Gemini as fallbacks. This gives cost flexibility and resilience without sacrificing quality.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">03</span><div><h4>Intelligent triage</h4><p>A triage layer decides whether the bot can answer confidently or a human should take over.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: EVALUATION -->
+      <div class="carousel-slide" data-i="3">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">04</span><span class="label">Evaluation &amp; guardrails</span><span class="rule"></span></div>
+          <div class="eval-grid">
+            <div class="eval-col" data-anim><h4>Confidence scoring</h4><p>High confidence (&ge; 0.65) auto-resolves. Medium (0.45&ndash;0.65) passes through sentiment &amp; urgency analysis. Low (&lt; 0.45) escalates immediately.</p></div>
+            <div class="eval-col" data-anim><h4>Feedback loop</h4><p>Thumbs up/down collected on every response and persisted for continuous improvement. Provider switching cuts token costs.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: OUTCOME -->
+      <div class="carousel-slide" data-i="4">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">05</span><span class="label">Outcome</span><span class="rule"></span></div>
+          <div class="outcome-metrics">
+            <div class="metric" data-anim><div class="value">78M+</div><div class="cap">meals served</div></div>
+            <div class="metric" data-anim><div class="value">40%</div><div class="cap">volunteer gap addressed</div></div>
+            <div class="metric" data-anim><div class="value">3</div><div class="cap">LLM providers</div></div>
+          </div>
+          <p class="outcome-note" data-anim>Prototype demonstrated as a case project. Automated responses validated against manual baseline with comparable accuracy on routine questions.</p>
+        </div>
+      </div>
+
+      <!-- 6: PROTOTYPE -->
+      <div class="carousel-slide" data-i="5">
+        <div class="slide-inner">
+          <div class="proto-card" data-anim>
+            <div class="proto-top">
+              <div class="slide-top" style="margin-bottom:0;"><span class="bx">06</span><span class="label">Solution / prototype</span><span class="rule"></span></div>
+            </div>
+            <div class="proto-tabs" id="protoTabs">
+              <button class="proto-tab active" data-tab="arch">Architecture</button>
+              <button class="proto-tab" data-tab="chat">Live chat</button>
+            </div>
+            <div class="proto-main">
+              <div class="proto-pane active" id="pane-arch">
+                <p class="proto-pane-head">// architecture</p>
+                <svg class="arch-svg" viewBox="0 0 440 290" fill="none" xmlns="http://www.w3.org/2000/svg" id="archSvg">
+                  <text x="90" y="12" fill="#6B6B6B" font-size="8" font-family="Inter, sans-serif" letter-spacing="0.1em" text-anchor="middle">DATA PIPELINE (OFFLINE)</text>
+                  <text x="330" y="12" fill="#6B6B6B" font-size="8" font-family="Inter, sans-serif" letter-spacing="0.1em" text-anchor="middle">QUERY PIPELINE (LIVE)</text>
+
+                  <g class="node" data-d="0"><rect x="30" y="22" width="120" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="90" y="39" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Raw JIRA Data</text><text x="90" y="52" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">historical tickets</text></g>
+                  <path class="arr" data-d="80" d="M90 62 L90 74" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="80" points="86,74 94,74 90,80" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="160"><rect x="30" y="82" width="120" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="90" y="99" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Text Cleaner</text><text x="90" y="112" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">HTML strip, merge</text></g>
+                  <path class="arr" data-d="240" d="M90 122 L90 134" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="240" points="86,134 94,134 90,140" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="320"><rect x="30" y="142" width="120" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="90" y="159" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Embeddings</text><text x="90" y="172" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">ada-002 / Gemini</text></g>
+                  <path class="arr" data-d="400" d="M90 182 L90 194" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="400" points="86,194 94,194 90,200" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="480"><rect x="30" y="202" width="120" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="90" y="219" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">ChromaDB</text><text x="90" y="232" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">vector store</text></g>
+
+                  <path class="arr" data-d="560" d="M150 222 L240 222" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="560" points="234,218 234,226 242,222" fill="#FF4D3D"/>
+                  <path class="arr" data-d="560" d="M240 232 L150 232" stroke="#FF4D3D" stroke-width="1.5" stroke-dasharray="4 2"/><polygon class="arr" data-d="560" points="156,228 156,236 148,232" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="520"><rect x="250" y="202" width="130" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="315" y="219" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">User Query</text><text x="315" y="232" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">incoming question</text></g>
+                  <path class="arr" data-d="600" d="M315 202 L315 190" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="600" points="311,190 319,190 315,184" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="640"><rect x="250" y="142" width="130" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="315" y="159" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Retrieval</text><text x="315" y="172" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">top-N similar tickets</text></g>
+                  <path class="arr" data-d="720" d="M315 142 L315 130" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="720" points="311,130 319,130 315,124" fill="#FF4D3D"/>
+
+                  <g class="node" data-d="760"><rect x="250" y="82" width="130" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="315" y="99" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Triage Engine</text><text x="315" y="112" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">confidence + sentiment</text></g>
+
+                  <path class="arr" data-d="840" d="M315 82 L315 70" stroke="#FF4D3D" stroke-width="1.5"/><polygon class="arr" data-d="840" points="311,70 319,70 315,64" fill="#FF4D3D"/>
+                  <g class="node" data-d="800"><rect x="250" y="22" width="130" height="40" rx="8" fill="#1C1C1C" stroke="#262626"/><text x="315" y="39" fill="#fff" font-size="10" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Response</text><text x="315" y="52" fill="#6B6B6B" font-size="7.5" font-family="Inter, sans-serif" text-anchor="middle">LLM + context</text></g>
+
+                  <path class="arr" data-d="840" d="M380 102 L384 102" stroke="#FF4D3D" stroke-width="1.5" stroke-dasharray="4 2"/><polygon class="arr" data-d="840" points="381,98 381,106 388,102" fill="#FF4D3D"/>
+                  <g class="node" data-d="880"><rect x="388" y="82" width="50" height="40" rx="8" fill="rgba(255,77,61,0.06)" stroke="#FF4D3D" stroke-dasharray="4 2"/><text x="413" y="99" fill="#FF4D3D" font-size="9" font-family="Space Grotesk, sans-serif" font-weight="700" text-anchor="middle">Human</text><text x="413" y="112" fill="#6B6B6B" font-size="7" font-family="Inter, sans-serif" text-anchor="middle">agent</text></g>
+                  <path class="arr" data-d="900" d="M408 82 L384 56" stroke="#FF4D3D" stroke-width="1.5" stroke-dasharray="4 2"/><polygon class="arr" data-d="900" points="382,60 388,54 380,52" fill="#FF4D3D"/>
+                </svg>
+              </div>
+              <div class="proto-pane" id="pane-chat">
+                <p class="proto-pane-head">// live chat</p>
+                <div class="chat-win" id="chatWin">
+                  <div class="chat-bar"><span class="dot"></span><span>CAFB Support</span><span class="online">online</span></div>
+                  <div class="chat-msgs">
+                    <div class="chat-msg bot" data-d="0"><div class="bub">Hi! I'm the CAFB support assistant. How can I help you today?</div></div>
+                    <div class="chat-msg user" data-d="500"><div class="bub">Where is my food order?</div></div>
+                    <div class="chat-msg bot" data-d="1000"><div class="bub">Your order #4521 is scheduled for delivery on Thursday between 9&ndash;11 AM. You can track it here: [tracking link]</div><div class="conf"><span class="bars"><i></i><i></i><i></i></span> 92% confident</div></div>
+                    <div class="chat-msg user" data-d="1700"><div class="bub">How do I volunteer this weekend?</div></div>
+                    <div class="chat-msg bot" data-d="2200"><div class="bub">We have 3 shifts available on Saturday: 8 AM, 12 PM, and 4 PM at the Silver Spring warehouse. Sign up here: [volunteer link]</div><div class="conf"><span class="bars"><i></i><i></i><i></i></span> 87% confident</div></div>
+                  </div>
+                  <div class="chat-input">Type your question&hellip;</div>
+                </div>
+              </div>
+            </div>
+            <p class="proto-caption">Prototype simulation. Built to demonstrate the solution, not a production deployment</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7: REFLECTIONS -->
+      <div class="carousel-slide" data-i="6">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">07</span><span class="label">Reflections</span><span class="rule"></span></div>
+          <div class="reflect-body">
+            <p data-anim>A curated golden-set evaluation pipeline would accelerate confidence calibration. The feedback loop works, but systematic test sets compress the learning cycle. It's a change I'd make before any production rollout.</p>
+            <p data-anim>The multi-provider pattern is broadly applicable to any nonprofit with an evolving knowledge base and a limited budget. The same architecture could serve legal-aid clinics, community health lines, or university advising.</p>
+          </div>
+          <p class="reflect-stack-label" data-anim>stack</p>
+          <div class="reflect-tags" data-anim>
+            <span>RAG</span><span>ChromaDB</span><span>DeepSeek</span><span>OpenAI</span><span>Gemini</span><span>Streamlit</span><span>Python</span><span>JIRA</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NAV -->
+    <nav class="slide-nav" aria-label="Slide navigation">
+      <button class="nav-arrow" id="prevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+      <span class="nav-counter" id="counter">1 / 7</span>
+      <div id="dots" style="display:flex;gap:6px;"></div>
+      <button class="nav-arrow" id="nextBtn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+  </div>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    let cur = 0;
+
+    const dotsWrap = document.getElementById('dots');
+    for (let i = 0; i < total; i++) {
+      const b = document.createElement('button');
+      b.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Slide ' + (i + 1));
+      b.onclick = () => go(i);
+      dotsWrap.appendChild(b);
+    }
+    const dots = dotsWrap.querySelectorAll('.nav-dot');
+    const counter = document.getElementById('counter');
+
+    function go(i) {
+      if (i < 0 || i >= total) return;
+      slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+    }
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          cur = parseInt(e.target.dataset.i, 10);
+          dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+          counter.textContent = (cur + 1) + ' / ' + total;
+          document.getElementById('prevBtn').disabled = cur === 0;
+          document.getElementById('nextBtn').disabled = cur === total - 1;
+          animate(e.target);
+        }
+      });
+    }, { root: carousel, threshold: 0.55 });
+    slides.forEach(s => obs.observe(s));
+
+    document.getElementById('prevBtn').onclick = () => { if (cur > 0) go(cur - 1); };
+    document.getElementById('nextBtn').onclick = () => { if (cur < total - 1) go(cur + 1); };
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(cur + 1);
+      if (e.key === 'ArrowLeft') go(cur - 1);
+    });
+
+    let tx = 0;
+    carousel.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 50) { dx < 0 ? go(cur + 1) : go(cur - 1); }
+    }, { passive: true });
+
+    // Mobile prototype tabs
+    const tabs = document.querySelectorAll('.proto-tab');
+    tabs.forEach(t => {
+      t.addEventListener('click', () => {
+        tabs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        const target = t.dataset.tab;
+        document.getElementById('pane-arch').classList.toggle('active', target === 'arch');
+        document.getElementById('pane-chat').classList.toggle('active', target === 'chat');
+        // Animate chat each time the Live chat tab is opened
+        if (target === 'chat') {
+          const cw = document.getElementById('chatWin');
+          if (cw) {
+            cw.querySelectorAll('.chat-msg').forEach(m => m.classList.remove('vis'));
+            cw.querySelectorAll('.chat-msg').forEach(m => {
+              const d = parseInt(m.dataset.d || '0', 10);
+              setTimeout(() => m.classList.add('vis'), reduced ? 0 : d);
+            });
+          }
+        }
+      });
+    });
+
+    function animate(slide) {
+      if (!slide.dataset.animFired) {
+        slide.dataset.animFired = '1';
+        slide.querySelectorAll('[data-anim]').forEach((el, i) => {
+          setTimeout(() => el.classList.add('in'), reduced ? 0 : i * 90);
+        });
+      }
+      // Architecture: re-draw every time the slide becomes active
+      const svg = slide.querySelector('#archSvg');
+      if (svg) {
+        svg.querySelectorAll('.node,.arr').forEach(n => n.classList.remove('vis'));
+        svg.querySelectorAll('.node,.arr').forEach(n => {
+          const d = parseInt(n.dataset.d || '0', 10);
+          setTimeout(() => n.classList.add('vis'), reduced ? 0 : d);
+        });
+      }
+      // Chat: on desktop animate on activation; on mobile it waits for the Live chat tab
+      const cw = slide.querySelector('#chatWin');
+      if (cw && window.innerWidth > 768) {
+        cw.querySelectorAll('.chat-msg').forEach(m => m.classList.remove('vis'));
+        cw.querySelectorAll('.chat-msg').forEach(m => {
+          const d = parseInt(m.dataset.d || '0', 10);
+          setTimeout(() => m.classList.add('vis'), reduced ? 0 : d);
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

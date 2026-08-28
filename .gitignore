@@ -1,0 +1,31 @@
+# Dependencies (only used for local verification scripts)
+node_modules/
+
+# Local dev / verification artifacts
+debug.js
+screenshots/
+
+# Editor / OS / agent state
+.vscode/
+.opencode/
+.DS_Store
+*.log
+
+# Secrets
+.env
+.env.*
+*.pem
+id_rsa*
+
+
+#agents
+AGENTS.md
+.claude/
+design/
+assets/
+review/
+content/
+skills/
+
+# Separate codebase (own repo)
+marketing-agent/
