@@ -109,7 +109,9 @@
     .scroll-row-wrap::after { right: 0; background: linear-gradient(to left, #0A0A0A 0%, transparent 100%); }
     .scroll-row-wrap.light::before { background: linear-gradient(to right, #0f0f0f 0%, transparent 100%); }
     .scroll-row-wrap.light::after { background: linear-gradient(to left, #0f0f0f 0%, transparent 100%); }
-    .scroll-row-wrap.cs-wrap::before, .scroll-row-wrap.cs-wrap::after { width: 28px; }
+    .scroll-row-wrap.cs-wrap::before, .scroll-row-wrap.cs-wrap::after { width: 16px; }
+    .scroll-row-wrap.cs-wrap::before { background: linear-gradient(to right, rgba(10,10,10,0.9) 0%, transparent 100%); }
+    .scroll-row-wrap.cs-wrap::after { background: linear-gradient(to left, rgba(10,10,10,0.9) 0%, transparent 100%); }
     @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.5rem)); } }
     .scroll-inner.auto-scroll { animation: scrollLeft 30s linear infinite; }
     .scroll-row:hover .scroll-inner.auto-scroll { animation-play-state: paused; }
@@ -759,13 +761,16 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
 
-  /* On mobile, fade the section strip out when idle, back in on scroll */
+  /* On mobile, fade the section strip out when idle, back in on any scroll/touch */
   if (sideNav) {
-    window.addEventListener('scroll', () => {
-      if (!isMobile()) return;
+    const pokeNav = () => {
       showNav();
+      clearTimeout(navHideTimer);
       navHideTimer = setTimeout(() => sideNav.classList.add('tb-hidden'), 2500);
-    }, { passive: true });
+    };
+    ['scroll', 'touchstart', 'pointerdown', 'wheel', 'keydown'].forEach(ev =>
+      window.addEventListener(ev, () => { if (isMobile()) pokeNav(); }, { passive: true })
+    );
   }
 
   /* Side nav: smooth scroll on click */
