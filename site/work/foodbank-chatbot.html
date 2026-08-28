@@ -104,11 +104,11 @@
     /* Slide content entrance (subtle, staggered per slide) */
     [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
     [data-anim].in { opacity: 1; transform: none; }
-    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; }
+    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; scroll-behavior: smooth; }
     .carousel::-webkit-scrollbar { display: none; }
-    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; scrollbar-width: none; }
     .carousel-slide::-webkit-scrollbar { display: none; }
-    .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: center; max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+    .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: safe center; max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
     @media (max-width: 640px) { .slide-inner { padding: 1rem; } }
     .slide-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
     .slide-top .bx { color: #FF4D3D; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; }
@@ -462,13 +462,6 @@
       if (e.key === 'ArrowRight') go(cur + 1);
       if (e.key === 'ArrowLeft') go(cur - 1);
     });
-
-    let tx = 0;
-    carousel.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-    carousel.addEventListener('touchend', e => {
-      const dx = e.changedTouches[0].clientX - tx;
-      if (Math.abs(dx) > 50) { dx < 0 ? go(cur + 1) : go(cur - 1); }
-    }, { passive: true });
 
     // Mobile prototype tabs
     const tabs = document.querySelectorAll('.proto-tab');

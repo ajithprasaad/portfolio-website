@@ -78,6 +78,8 @@
     .cs-arrow:hover { border-color: #FF4D3D; color: #FF4D3D; }
     .cs-arrow:disabled { opacity: 0.25; cursor: default; }
     @media (min-width: 1024px) { .cs-arrow { top: 42%; } }
+    .cs-auto-btn { flex-shrink: 0; width: 40px; height: 40px; border-radius: 9999px; background: #141414; border: 1px solid #262626; color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; }
+    .cs-auto-btn:hover { border-color: #FF4D3D; color: #FF4D3D; }
     /* Case study card banner (ad-style header) */
     .scroll-inner > .cs-card { display: flex; flex-direction: column; overflow: hidden; }
     .cs-body { flex: 1; }
@@ -107,6 +109,7 @@
     .scroll-row-wrap::after { right: 0; background: linear-gradient(to left, #0A0A0A 0%, transparent 100%); }
     .scroll-row-wrap.light::before { background: linear-gradient(to right, #0f0f0f 0%, transparent 100%); }
     .scroll-row-wrap.light::after { background: linear-gradient(to left, #0f0f0f 0%, transparent 100%); }
+    .scroll-row-wrap.cs-wrap::before, .scroll-row-wrap.cs-wrap::after { width: 28px; }
     @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.5rem)); } }
     .scroll-inner.auto-scroll { animation: scrollLeft 30s linear infinite; }
     .scroll-row:hover .scroll-inner.auto-scroll { animation-play-state: paused; }
@@ -124,6 +127,10 @@
     @media (max-width: 1023px) { .side-nav .lbl { display: none; } }
     .side-nav a:hover .lbl { opacity: 1; color: #9A9A9A; }
     .side-nav a.active .lbl { opacity: 1; color: #fff; }
+    @media (max-width: 1023px) {
+      .side-nav { transition: opacity 0.4s ease; }
+      .side-nav.tb-hidden { opacity: 0; pointer-events: none; }
+    }
   </style>
 </head>
 <body class="bg-ink text-muted font-body antialiased selection:bg-accent selection:text-white">
@@ -268,9 +275,12 @@
     <section id="work" class="border-t border-line fade-in">
       <div class="container-x py-24 md:py-32">
         <p class="sl"><span class="n"># 02</span> / case studies</p>
-        <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-3">Proof over promises<span class="text-accent">.</span></h2>
-        <p class="text-muted max-w-2xl mb-12">Selected work with verified outcomes. Expand any card for the numbers.</p>
-        <div class="relative scroll-row-wrap">
+        <div class="flex items-end justify-between gap-4 mb-3">
+          <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em]">Proof over promises<span class="text-accent">.</span></h2>
+          <button id="cs-auto-toggle" class="cs-auto-btn" aria-label="Pause auto-scroll" aria-pressed="true"><i class="fa-solid fa-pause"></i></button>
+        </div>
+        <p class="text-muted max-w-2xl mb-12">Selected work with verified outcomes. Expand any card for the numbers. Auto-scrolls &mdash; hover, drag, or pause to read.</p>
+        <div class="relative scroll-row-wrap cs-wrap">
           <button class="cs-arrow" style="left:-2px" data-dir="prev" aria-label="Previous case study"><i class="fa-solid fa-chevron-left"></i></button>
           <button class="cs-arrow" style="right:-2px" data-dir="next" aria-label="Next case study"><i class="fa-solid fa-chevron-right"></i></button>
           <div id="cs-grid" class="scroll-row"></div>
@@ -662,13 +672,14 @@
     }));
   }
 
-  /* Case study carousel arrows (manual scroll, no auto-scroll) */
+  /* Case study carousel (manual arrows + slow auto-scroll, pause on interaction) */
   const csRow = document.getElementById('cs-grid');
   if (csRow) {
     const csArrows = document.querySelectorAll('.cs-arrow');
+    const toggleBtn = document.getElementById('cs-auto-toggle');
+    let csStep = 340;
+    const updateStep = () => { const first = csRow.querySelector('.cs-card'); csStep = first ? first.offsetWidth + 16 : 340; };
     const updateArrows = () => {
-      const first = csRow.querySelector('.cs-card');
-      const step = first ? first.offsetWidth + 16 : 340;
       const atStart = csRow.scrollLeft <= 0;
       const atEnd = csRow.scrollLeft + csRow.clientWidth >= csRow.scrollWidth - 2;
       csArrows.forEach(b => {
@@ -677,28 +688,85 @@
       });
     };
     csArrows.forEach(b => b.addEventListener('click', () => {
-      const first = csRow.querySelector('.cs-card');
-      const step = first ? first.offsetWidth + 16 : 340;
-      csRow.scrollBy({ left: b.dataset.dir === 'next' ? step : -step, behavior: 'smooth' });
+      updateStep();
+      csRow.scrollBy({ left: b.dataset.dir === 'next' ? csStep : -csStep, behavior: 'smooth' });
+      pauseAuto(4000);
     }));
     csRow.addEventListener('scroll', updateArrows);
-    window.addEventListener('resize', updateArrows);
+    window.addEventListener('resize', () => { updateStep(); updateArrows(); });
+
+    /* Slow auto-scroll with pause-on-interaction */
+    let autoOn = true;
+    let userPaused = false;
+    let resumeTimer = null;
+    let autoTimer = null;
+    const SPEED = 2400;
+    const tick = () => {
+      if (!autoOn || userPaused) return;
+      updateStep();
+      const atEnd = csRow.scrollLeft + csRow.clientWidth >= csRow.scrollWidth - 2;
+      if (atEnd) csRow.scrollTo({ left: 0, behavior: 'smooth' });
+      else csRow.scrollBy({ left: csStep, behavior: 'smooth' });
+    };
+    const startAuto = () => { if (!autoTimer) autoTimer = setInterval(tick, SPEED); };
+    const stopAuto = () => { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } };
+    const setAuto = (on) => {
+      autoOn = on;
+      if (toggleBtn) {
+        toggleBtn.innerHTML = on ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+        toggleBtn.setAttribute('aria-pressed', String(on));
+        toggleBtn.setAttribute('aria-label', on ? 'Pause auto-scroll' : 'Resume auto-scroll');
+      }
+      if (on) startAuto(); else stopAuto();
+    };
+    const pauseAuto = (ms) => {
+      userPaused = true;
+      clearTimeout(resumeTimer);
+      if (ms) resumeTimer = setTimeout(() => { userPaused = false; }, ms);
+    };
+    /* Pause while the user reads/interacts; resume after idle */
+    csRow.addEventListener('mouseenter', () => pauseAuto(0));
+    csRow.addEventListener('mouseleave', () => pauseAuto(1600));
+    csRow.addEventListener('wheel', () => pauseAuto(4500), { passive: true });
+    csRow.addEventListener('touchstart', () => pauseAuto(4500), { passive: true });
+    csRow.addEventListener('pointerdown', () => pauseAuto(4500));
+
+    if (toggleBtn) toggleBtn.addEventListener('click', () => setAuto(!autoOn));
+
+    updateStep();
     updateArrows();
+    startAuto();
   }
 
-  /* Side nav: IntersectionObserver for active section highlighting */
+  /* Side nav: active section highlighting + mobile fade in/out per section */
+  const sideNav = document.querySelector('.side-nav');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.side-nav a');
+  let activeSection = null;
+  let navHideTimer = null;
+  const isMobile = () => window.matchMedia('(max-width: 1023px)').matches;
+  const showNav = () => { if (sideNav) sideNav.classList.remove('tb-hidden'); clearTimeout(navHideTimer); };
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && entry.target.id !== activeSection) {
+        activeSection = entry.target.id;
         navLinks.forEach(link => link.classList.remove('active'));
         const active = document.querySelector('.side-nav a[data-section="' + entry.target.id + '"]');
         if (active) active.classList.add('active');
+        if (isMobile()) showNav();   /* fade the strip back in at each new section */
       }
     });
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
+
+  /* On mobile, fade the section strip out when idle, back in on scroll */
+  if (sideNav) {
+    window.addEventListener('scroll', () => {
+      if (!isMobile()) return;
+      showNav();
+      navHideTimer = setTimeout(() => sideNav.classList.add('tb-hidden'), 2500);
+    }, { passive: true });
+  }
 
   /* Side nav: smooth scroll on click */
   navLinks.forEach(link => {
