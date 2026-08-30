@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ajith Iyer builds products from zero to one as an AI-native product and solutions engineer. Currently: agentic workflows and the evals that keep them production-safe." />
   <title>Ajith Iyer — AI-Native Solutions Engineer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,11 +35,7 @@
     .cs-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
     .cs-expand { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
     .cs-card.open .cs-expand { max-height: 600px; }
-    .cap-row { transition: background 0.15s ease; }
-    .cap-row:hover { background: #1C1C1C; }
-    .cap-detail { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .cap-row.open .cap-detail { max-height: 300px; }
-    .cap-row.linked, .cs-card.linked { outline: 1px solid #FF4D3D; outline-offset: 1px; }
+    .cs-card.linked { outline: 1px solid #FF4D3D; outline-offset: 1px; }
     /* Dot scale ratings */
     .dot-rating { width: 8px; height: 8px; border-radius: 50%; background: #262626; display: inline-block; transition: background 0.2s; }
     .dot-rating.filled { background: #FF4D3D; }
@@ -64,7 +61,7 @@
     .stagger-children.visible .stagger-item:nth-child(8) { transition-delay: 420ms; }
     .stagger-children.visible .stagger-item:nth-child(n+9) { transition-delay: 480ms; }
     /* Horizontal scroll rows */
-    .scroll-row { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0.5rem; }
+    .scroll-row { overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; padding-bottom: 0.5rem; }
     .scroll-row::-webkit-scrollbar { height: 4px; }
     .scroll-row::-webkit-scrollbar-track { background: #1C1C1C; border-radius: 2px; }
     .scroll-row::-webkit-scrollbar-thumb { background: #FF4D3D; border-radius: 2px; }
@@ -73,13 +70,12 @@
     .scroll-inner > .scroll-card:hover { border-color: #FF4D3D; box-shadow: 0 4px 24px rgba(255,77,61,0.08); transform: translateY(-2px); }
     /* Case study horizontal carousel (manual scroll with arrows) */
     #cs-grid.scroll-row { scroll-snap-type: x mandatory; scrollbar-width: thin; }
-    .scroll-inner > .cs-card { flex: 0 0 340px; max-width: 85vw; scroll-snap-align: start; scroll-snap-stop: always; }
+    .scroll-inner > .cs-card { flex: 0 0 340px; max-width: 85vw; scroll-snap-align: start; }
     .cs-arrow { position: absolute; top: 38%; z-index: 10; width: 38px; height: 38px; border-radius: 9999px; background: #141414; border: 1px solid #262626; color: #fff; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; flex-shrink: 0; }
     .cs-arrow:hover { border-color: #FF4D3D; color: #FF4D3D; }
     .cs-arrow:disabled { opacity: 0.25; cursor: default; }
     @media (min-width: 1024px) { .cs-arrow { top: 42%; } }
-    .cs-auto-btn { flex-shrink: 0; width: 40px; height: 40px; border-radius: 9999px; background: #141414; border: 1px solid #262626; color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; }
-    .cs-auto-btn:hover { border-color: #FF4D3D; color: #FF4D3D; }
+    @media (max-width: 767px) { .cs-arrow { display: none; } }
     /* Case study card banner (ad-style header) */
     .scroll-inner > .cs-card { display: flex; flex-direction: column; overflow: hidden; }
     .cs-body { flex: 1; }
@@ -112,24 +108,22 @@
     .scroll-row-wrap.cs-wrap::before, .scroll-row-wrap.cs-wrap::after { width: 16px; }
     .scroll-row-wrap.cs-wrap::before { background: linear-gradient(to right, rgba(10,10,10,0.9) 0%, transparent 100%); }
     .scroll-row-wrap.cs-wrap::after { background: linear-gradient(to left, rgba(10,10,10,0.9) 0%, transparent 100%); }
-    @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.5rem)); } }
-    .scroll-inner.auto-scroll { animation: scrollLeft 30s linear infinite; }
+    @keyframes slideGapped { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .scroll-inner.auto-scroll { animation: slideGapped 42s linear infinite; will-change: transform; }
     .scroll-row:hover .scroll-inner.auto-scroll { animation-play-state: paused; }
     .reply-block { font-family: 'Courier New', monospace; font-size: 13px; background: #141414; border: 1px solid #262626; border-radius: 12px; padding: 1rem; color: #9A9A9A; white-space: pre; overflow-x: auto; }
     .reply-block .k { color: #FF4D3D; }
     .reply-block .v { color: #fff; }
     .reply-block .s { color: #6B6B6B; }
-    /* Side nav indicator — horizontal strip layered at top on mobile, vertical on desktop */
-    .side-nav { position: fixed; left: 0; right: 0; top: 4rem; z-index: 45; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 1.25rem; padding: 0.5rem 0; background: rgba(10,10,10,0.82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid #262626; }
-    @media (min-width: 1024px) { .side-nav { left: auto; right: 1.5rem; top: 50%; transform: translateY(-50%); flex-direction: column; align-items: stretch; gap: 0.75rem; padding: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: none; } .side-nav a { justify-content: flex-end; } }
+    /* Side nav indicator, vertical strip on large screens only */
+    .side-nav { position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 45; display: flex; flex-direction: column; align-items: stretch; gap: 0.75rem; }
     .side-nav a { position: relative; display: flex; align-items: center; gap: 10px; text-decoration: none; justify-content: flex-end; }
     .side-nav .dot { width: 8px; height: 8px; border-radius: 50%; background: #262626; transition: all 0.25s; flex-shrink: 0; }
     .side-nav a.active .dot { background: #FF4D3D; box-shadow: 0 0 8px rgba(255,77,61,0.5); transform: scale(1.3); }
     .side-nav .lbl { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #6B6B6B; opacity: 0; transition: opacity 0.2s; white-space: nowrap; pointer-events: none; }
-    @media (max-width: 1023px) { .side-nav .lbl { display: none; } }
     .side-nav a:hover .lbl { opacity: 1; color: #9A9A9A; }
     .side-nav a.active .lbl { opacity: 1; color: #fff; }
-    @media (max-width: 1023px) {
+    @media (max-width: 1279px) {
       .side-nav { display: none; }
     }
   </style>
@@ -139,25 +133,27 @@
   <header class="sticky top-0 z-50 bg-ink/80 backdrop-blur border-b border-line">
     <nav class="container-x flex items-center justify-between h-16">
       <a href="#top" class="font-display font-bold text-white text-xl tracking-tight">Ajith Iyer<span class="text-accent">.</span></a>
-      <ul class="hidden md:flex items-center gap-8 text-sm">
+      <ul class="hidden lg:flex items-center gap-8 text-sm">
         <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
         <li><a href="#work" class="hover:text-white transition-colors">Work</a></li>
         <li><a href="#stack" class="hover:text-white transition-colors">Stack</a></li>
         <li><a href="#experience" class="hover:text-white transition-colors">Experience</a></li>
+        <li><a href="#readings" class="hover:text-white transition-colors">Readings</a></li>
         <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
       </ul>
       <div class="flex items-center gap-3">
-        <a href="#contact" class="hidden sm:inline-flex items-center rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-medium px-4 py-2 transition-colors">Get in touch</a>
-        <button id="nav-toggle" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-line text-white hover:border-white transition-colors" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <a href="#contact" class="inline-flex items-center rounded-lg bg-accent hover:bg-accent-hover text-white text-sm font-medium px-4 py-2 transition-colors">Get in touch</a>
+        <button id="nav-toggle" class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-line text-white hover:border-white transition-colors" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
           <i class="fa-solid fa-bars"></i>
         </button>
       </div>
     </nav>
-    <ul id="mobile-menu" class="md:hidden hidden border-t border-line bg-ink">
+    <ul id="mobile-menu" class="lg:hidden hidden border-t border-line bg-ink">
       <li><a href="#about" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">About</a></li>
       <li><a href="#work" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">Work</a></li>
       <li><a href="#stack" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">Stack</a></li>
       <li><a href="#experience" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">Experience</a></li>
+      <li><a href="#readings" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">Readings</a></li>
       <li><a href="#contact" class="block px-6 py-3 text-sm hover:text-white hover:bg-surface transition-colors">Contact</a></li>
     </ul>
   </header>
@@ -169,6 +165,7 @@
     <a href="#work" data-section="work"><span class="dot"></span><span class="lbl">Work</span></a>
     <a href="#stack" data-section="stack"><span class="dot"></span><span class="lbl">Stack</span></a>
     <a href="#experience" data-section="experience"><span class="dot"></span><span class="lbl">Experience</span></a>
+    <a href="#readings" data-section="readings"><span class="dot"></span><span class="lbl">Readings</span></a>
     <a href="#contact" data-section="contact"><span class="dot"></span><span class="lbl">Contact</span></a>
   </nav>
 
@@ -182,7 +179,7 @@
           <span class="hero-line" style="display:block">Build<span class="text-accent">.</span></span>
           <span class="hero-line" style="display:block">Ship<span class="text-accent">.</span></span>
         </h1>
-        <p class="mt-8 max-w-md text-lg leading-relaxed">I&rsquo;m an engineer who moved into product to ship LLM features. Still building: RAG pipelines, agentic workflows, and the evals that keep them production-safe.</p>
+        <p class="mt-8 max-w-md text-lg leading-relaxed">I&rsquo;m an engineer who moved into product to build products from zero to one. Right now I&rsquo;m building agentic workflows and the evals that keep them production-safe.</p>
         <div class="mt-10 flex flex-wrap gap-4">
           <a href="#contact" class="inline-flex items-center rounded-lg bg-accent hover:bg-accent-hover text-white font-medium px-6 py-3 transition-colors">Let&rsquo;s talk</a>
           <a href="#experience" class="inline-flex items-center rounded-lg border border-line hover:border-white text-white font-medium px-6 py-3 transition-colors">View experience</a>
@@ -216,13 +213,13 @@
       <div class="grid md:grid-cols-[1fr_280px] gap-12 items-start">
         <div>
           <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em]">I build products end to end</h2>
-          <p class="mt-6 text-lg leading-relaxed">The building side runs deep. I ship RAG pipelines, agentic workflows, and rubric-based evals, with habits formed over seven years of writing microservices, distributed systems, and enterprise plumbing that were high stakes.</p>
-          <p class="mt-4 text-lg leading-relaxed">The proving side is where product comes in. On an AI hiring platform serving 120+ B2B clients, I ran the A/B tests that lifted engagement from 68% to 85%, cut per-token costs roughly 20% with prompt compression and model tiering, and turned 50+ technical demos into partnerships.</p>
-          <p class="mt-4 text-lg leading-relaxed">Business school added the strategy layer: commercialization consulting for a deep-tech venture, pricing analysis across a 150-school education network, and leading a six-person consulting team to solve GTM challenges in water treatment facilities. Today I advise product strategy for a civic nonprofit, help early-stage founders shape go-to-market plans ahead of their first raise, and build AI tools full-time.</p>
+          <p class="mt-6 text-lg leading-relaxed"><strong class="text-white font-semibold">An engineer who moved into product.</strong> Seven years of microservices, distributed systems, and high-stakes enterprise plumbing gave me the habits; today those habits ship as RAG pipelines, agentic workflows, and rubric-based evals built to be production-safe.</p>
+          <p class="mt-4 text-lg leading-relaxed"><strong class="text-white font-semibold">A product person who proves with numbers.</strong> On an AI hiring platform serving 120+ B2B clients, I ran the A/B tests that lifted engagement <strong class="text-white font-semibold">17%</strong> (68%&rarr;85%), cut per-token costs ~20% with prompt compression and model tiering, and turned 50+ technical demos into partnerships.</p>
+          <p class="mt-4 text-lg leading-relaxed"><strong class="text-white font-semibold">A strategist with a builder&rsquo;s instincts.</strong> CS from MIT Pune + MBA from UMD Smith, so I move between the code and the commercialization: GTM for a deep-tech venture, pricing across a 150-school network, a six-person consulting team. Today I advise strategy for a civic nonprofit, coach founders before their first raise, and build AI tools full-time.</p>
           <dl class="mt-8 grid sm:grid-cols-3 gap-4">
             <div class="rounded-2xl border border-line bg-gradient-to-b from-accent/[0.06] to-transparent p-5">
               <div class="flex flex-wrap items-start justify-between gap-2">
-                <dt class="font-display font-bold text-accent text-2xl sm:text-3xl leading-none">68&rarr;85%</dt>
+                <dt class="font-display font-bold text-accent text-2xl sm:text-3xl leading-none">+17%</dt>
                 <span class="text-[10px] uppercase tracking-[0.12em] text-muted-2 mt-1">experimentation</span>
               </div>
               <dd class="mt-3">
@@ -276,9 +273,7 @@
     <section id="work" class="border-t border-line fade-in">
       <div class="container-x py-24 md:py-32">
         <p class="sl"><span class="n"># 02</span> / case studies</p>
-        <div class="flex items-end justify-between gap-4 mb-3">
-          <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em]">Proof over promises<span class="text-accent">.</span></h2>
-        </div>
+        <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-3">Proof over promises<span class="text-accent">.</span></h2>
         <p class="text-muted max-w-2xl mb-12">Selected work with verified outcomes. Expand any card for the numbers. Scroll or drag to explore.</p>
         <div class="relative scroll-row-wrap cs-wrap">
           <button class="cs-arrow" style="left:-2px" data-dir="prev" aria-label="Previous case study"><i class="fa-solid fa-chevron-left"></i></button>
@@ -318,13 +313,13 @@
         <article class="relative">
           <span class="absolute -left-[31px] md:-left-[47px] top-1.5 w-3 h-3 rounded-full bg-accent ring-4 ring-ink"></span>
           <div class="md:flex md:items-baseline md:justify-between gap-4">
-            <h3 class="font-display font-semibold text-white text-xl">Pricing &amp; Marketing Intern</h3>
+            <h3 class="font-display font-semibold text-white text-xl">MBA Summer Intern &middot; Product Discovery &amp; Roadmap</h3>
             <span class="text-sm text-muted-2 whitespace-nowrap">May 2025 &ndash; Aug 2025</span>
           </div>
           <p class="text-accent text-sm mt-1">Center for Educational Innovation &amp; Improvement &middot; 150-school network</p>
           <ul class="mt-3 space-y-1.5 text-sm list-disc list-outside ml-4 marker:text-accent">
-            <li>Analyzed pricing and positioning for programs serving a network of 150+ schools.</li>
-            <li>Supported marketing strategy across the organization&rsquo;s education portfolio.</li>
+            <li>Led product discovery across 150+ schools; ran 20+ user and stakeholder interviews to define a 12-month roadmap via RICE prioritization.</li>
+            <li>Authored PRDs and partnered with engineering to turn ambiguous requirements into shipped features, unlocking new revenue streams.</li>
           </ul>
         </article>
 
@@ -411,7 +406,7 @@
       </div>
     </section>
 
-    <!-- #05 READINGS — see PAUSED block below     -->
+    <!-- #05 READINGS -->
     <section id="readings" class="border-t border-line bg-surface/30 fade-in">
       <div class="container-x py-24 md:py-32">
         <p class="sl"><span class="n"># 05</span> / readings</p>
@@ -420,22 +415,14 @@
       </div>
     </section>
 
-
-    <!-- ============================================================
-         PAUSED: Readings section.
-         TODO(ajith): fix descriptions and re-theme the list toward the
-         AI and product story before restoring (quant-trading books are
-         a better interview topic than a landing-page signal).
-         ============================================================ -->
-
-    <!-- #05 CONTACT -->
+    <!-- #06 CONTACT -->
     <section id="contact" class="container-x py-24 md:py-32 fade-in">
-      <p class="sl"><span class="n"># 05</span> / contact</p>
+      <p class="sl"><span class="n"># 06</span> / contact</p>
       <h2 class="font-display font-bold text-white text-4xl md:text-5xl leading-tight tracking-[-0.02em]">Let&rsquo;s build<br>something together<span class="text-accent">.</span></h2>
       <p class="mt-4 max-w-xl text-lg">Open to AI-native product and solutions engineering roles. If technical depth and product thinking matter to your team, let&rsquo;s talk.</p>
 
-      <div class="mt-10 grid md:grid-cols-2 gap-10">
-        <div class="space-y-6 text-sm">
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="space-y-6 text-sm min-w-0">
           <a href="mailto:ajithprasaad95@gmail.com" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-envelope text-accent"></i> ajithprasaad95@gmail.com</a>
           <a href="https://www.linkedin.com/in/ajithiyer" target="_blank" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-brands fa-linkedin text-accent"></i> linkedin.com/in/ajithiyer</a>
           <a href="https://calendly.com/ajithiyer/30min" target="_blank" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-calendar-check text-accent"></i> Schedule a meeting</a>
@@ -443,7 +430,7 @@
           <a href="https://drive.google.com/file/d/1XaOq8_KTMQcqLRopq5AVUnsLVkTEjhmY/view?usp=sharing" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-file-pdf text-accent"></i> resume.pdf</a>
         </div>
 
-        <div>
+        <div class="min-w-0">
           <p class="text-[13px] uppercase tracking-[0.12em] text-muted-2 mb-3">// reply_template.json</p>
           <div class="reply-block"><span class="s">{</span>
   <span class="k">"to"</span>       : <span class="v">"ajithprasaad95@gmail.com"</span> ,
@@ -522,12 +509,7 @@
     ]}
   ];
 
-  /* ==============================================================
-     PAUSED: readings data. Restore together with the commented-out
-     #readings section and its renderer below after re-theming.
-     ==============================================================
-       ============================================================== */
-
+  /* Readings data */
   const READINGS = [
     { type:"book", status:"now reading", title:"The Alignment Problem", author:"Brian Christian", note:"How do you ensure AI does what you actually want? Christian maps the field's hardest open problem.", img:"https://m.media-amazon.com/images/I/71buTbF1YDL._SL1200_.jpg" },
     { type:"book", status:"queued", title:"Crossing the Chasm", author:"Geoffrey Moore", note:"The gap between early adopters and the mainstream is where products go to die. Still the best GTM framework.", img:"https://m.media-amazon.com/images/I/41FnvYAM2HL._SY445_SX342_FMwebp_.jpg" },
@@ -540,21 +522,10 @@
     { type:"paper", status:"finished", title:"Chain-of-Thought Prompting", author:"Wei et al.", note:"LLMs reason better when you let them think step by step. Simple technique, massive impact on RAG quality.", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq50pGjhc71zrFoJZdfMv5-mpOXIFDep4rsWN_OygyXw&s=10" }
   ];
 
-
-  /* Shuffle array for randomized display */
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
   /* Render case studies as a horizontal carousel */
   const csStatusClass = { 'Available to read': 'status-reading', 'In progress': 'status-queued' };
   document.getElementById('cs-grid').innerHTML = '<div class="scroll-inner stagger-children">' + CS.map(cs => `
-    <article class="cs-card scroll-card stagger-item rounded-2xl border border-line bg-surface${cs.slug ? ' clickable' : ''}" id="card-${cs.id}" data-id="${cs.id}"${cs.slug ? ' data-slug="' + cs.slug + '" role="link" tabindex="0" aria-label="' + cs.title + ' — read full case study"' : ''}>
+    <article class="cs-card scroll-card stagger-item rounded-2xl border border-line bg-surface${cs.slug ? ' clickable' : ''}" id="card-${cs.id}" data-id="${cs.id}"${cs.slug ? ' data-slug="' + cs.slug + '" role="link" tabindex="0" aria-label="' + cs.title + ' · read full case study"' : ''}>
       <div class="cs-banner">
         <i class="${cs.icon} cs-banner-icon"></i>
         <span class="cs-banner-num">${cs.num}</span>
@@ -597,11 +568,7 @@
     </div>
   `).join('');
 
-  /* ==============================================================
-     PAUSED: readings renderer (paired with the commented-out
-     #readings section and READINGS data above).
-     ==============================================================
-  ============================================================== */
+  /* Render readings */
   const typeLabels = { book:'Books', podcast:'Podcasts', creator:'Creators & Thinkers', paper:'Research Papers' };
   const typeOrder = ['book', 'podcast', 'creator', 'paper'];
   const grouped = {};
@@ -619,6 +586,7 @@
     </div>`;
   }
   let rowsHTML = '';
+  const gapHTML = '<div aria-hidden="true" style="flex:0 0 900px;min-width:900px"></div>';
   typeOrder.forEach(type => {
     const items = grouped[type];
     if (!items) return;
@@ -627,11 +595,14 @@
     <div>
       <p class="text-[13px] uppercase tracking-[0.12em] text-accent mb-4 font-medium">// ${typeLabels[type]}</p>
       <div class="scroll-row-wrap">
-        <div class="scroll-row"><div class="scroll-inner auto-scroll">${cards}${cards}</div></div>
+        <div class="scroll-row"><div class="scroll-inner auto-scroll">${cards}${gapHTML}${cards}${gapHTML}</div></div>
       </div>
     </div>`;
   });
   document.getElementById('readings-rows').innerHTML = rowsHTML;
+  document.querySelectorAll('.scroll-inner.auto-scroll').forEach((el, i) => {
+    el.style.animationDelay = `-${(i * 1.6).toFixed(2)}s`;
+  });
 
 
   /* Case study expand/collapse */
