@@ -9,6 +9,7 @@ site/_shot.cjs
 # Local dev / verification artifacts
 debug.js
 screenshots/
+file_sources/
 
 # Editor / OS / agent state
 .vscode/

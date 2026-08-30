@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quantum Tech Verdict — Ajith Iyer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0A0A0A', surface: '#141414', 'surface-2': '#1C1C1C',
+            line: '#262626', muted: '#9A9A9A', 'muted-2': '#6B6B6B',
+            accent: '#FF4D3D', 'accent-hover': '#E83C2C'
+          },
+          fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['Inter', 'sans-serif'] },
+          maxWidth: { container: '1200px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A0A0A; color: #9A9A9A; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    ::selection { background: #FF4D3D; color: #fff; }
+    .container-x { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; }
+    @media (max-width: 640px) { .container-x { padding-inline: 1rem; } }
+
+    /* === HEADER === */
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 56px; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border-bottom: 1px solid #262626; display: flex; align-items: center; }
+    .site-header nav { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .site-header a.wordmark { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 1.125rem; letter-spacing: -0.02em; text-decoration: none; }
+    .site-header a.wordmark span { color: #FF4D3D; }
+    .site-header .header-links { display: flex; align-items: center; gap: 1rem; }
+    .site-header .header-links a { font-size: 0.875rem; color: #6B6B6B; text-decoration: none; transition: color 0.15s; }
+    .site-header .header-links a:hover { color: #fff; }
+    .site-header .cta-btn { background: #FF4D3D; color: #fff; font-size: 0.875rem; font-weight: 500; padding: 0.375rem 0.75rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .site-header .cta-btn:hover { background: #E83C2C; }
+    @media (max-width: 640px) { .site-header .header-links a:not(.cta-btn) { display: none; } }
+
+    /* === CONTEXT HERO === */
+    .context-section { position: relative; z-index: 10; overflow: hidden; }
+    .context-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .context-bg::before {
+      content: ''; position: absolute; inset: -15%;
+      background:
+        radial-gradient(ellipse at 50% -10%, #171717 0%, #0A0A0A 60%),
+        radial-gradient(circle at 78% 30%, rgba(255,77,61,0.06) 0%, transparent 44%),
+        radial-gradient(circle at 88% 78%, rgba(255,77,61,0.04) 0%, transparent 40%);
+      animation: bgDrift 26s ease-in-out infinite alternate;
+    }
+    @keyframes bgDrift { from { transform: scale(1) translate3d(0,0,0); } to { transform: scale(1.06) translate3d(0,-2%,0); } }
+    .context-bg .particle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); animation: floatUp linear infinite; }
+    @keyframes floatUp { from { transform: translateY(0); opacity: 0; } 12% { opacity: 0.6; } 88% { opacity: 0.6; } to { transform: translateY(-130px); opacity: 0; } }
+
+    .content-shell { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; position: relative; z-index: 1; }
+    @media (max-width: 640px) { .content-shell { padding-inline: 1rem; } }
+
+    .context-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: clamp(5rem, 10vw, 7rem) 0 clamp(2.5rem, 6vw, 4rem); }
+    @media (max-width: 640px) { .context-inner { padding: 3.5rem 0 1.5rem; } }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: #9A9A9A; text-decoration: none; transition: color 0.2s, gap 0.2s; margin-bottom: 1.75rem; }
+    .back-btn:hover { color: #fff; gap: 0.65rem; }
+    .back-btn i { font-size: 0.7rem; }
+    .context-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #FF4D3D; font-weight: 500; text-shadow: 0 0 18px rgba(255,77,61,0.35); }
+    .context-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.02; letter-spacing: -0.02em; margin-top: 1rem; }
+    .context-title .period { color: #FF4D3D; text-shadow: 0 0 24px rgba(255,77,61,0.45); }
+    .context-subtitle { font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: #C4C4C4; margin-top: 1.25rem; line-height: 1.6; max-width: 600px; }
+    .context-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    @media (max-width: 640px) {
+      .context-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+      .context-subtitle { font-size: 0.95rem; margin-top: 0.875rem; line-height: 1.5; }
+      .context-tags { margin-top: 1rem; gap: 0.375rem; }
+    }
+    .context-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; background: rgba(20,20,20,0.5); transition: border-color 0.2s, color 0.2s; }
+    .context-tags span:hover { border-color: #FF4D3D; color: #fff; }
+    .context-blurb { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #1C1C1C; max-width: 620px; }
+    .context-blurb-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; margin-bottom: 0.75rem; }
+    .context-blurb-label .n { color: #FF4D3D; }
+    .context-blurb p { font-size: 0.9rem; color: #6B6B6B; line-height: 1.7; }
+    @media (max-width: 640px) {
+      .context-blurb { margin-top: 1.25rem; padding-top: 1rem; }
+      .context-blurb p { font-size: 0.8rem; line-height: 1.6; }
+    }
+
+    /* Context entrance (plays once on load) */
+    .context-inner > * { opacity: 0; transform: translateY(16px); animation: ctxUp 0.6s ease-out forwards; }
+    .context-eyebrow { animation-delay: 0.05s; }
+    .context-title { animation-delay: 0.15s; }
+    .context-subtitle { animation-delay: 0.28s; }
+    .context-tags { animation-delay: 0.4s; }
+    .context-blurb { animation-delay: 0.52s; }
+    @keyframes ctxUp { to { opacity: 1; transform: none; } }
+
+    /* === CAROUSEL === */
+    .carousel-wrap { position: relative; z-index: 20; max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; padding-bottom: 4rem; }
+    @media (max-width: 640px) { .carousel-wrap { padding-inline: 1rem; } }
+
+    /* Slide content entrance (subtle, staggered per slide) */
+    [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    [data-anim].in { opacity: 1; transform: none; }
+    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; scroll-behavior: smooth; }
+    .carousel::-webkit-scrollbar { display: none; }
+    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; overflow-y: auto; scrollbar-width: none; }
+    .carousel-slide::-webkit-scrollbar { display: none; }
+    .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: safe center; max-width: 1000px; margin: 0; padding: 1.5rem 0 4.5rem; }
+    @media (max-width: 640px) { .slide-inner { padding: 1rem 0 4.5rem; } }
+    .slide-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
+    .slide-top .bx { color: #FF4D3D; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; }
+    .slide-top .label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; }
+    .slide-top .rule { flex: 1; height: 1px; background: #1C1C1C; }
+
+    /* --- PROBLEM: accent bar + larger text --- */
+    .slide-problem { border-left: 4px solid #FF4D3D; padding-left: 1.5rem; }
+    .slide-problem p { color: #E8E8E8; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.6; font-weight: 500; }
+    .slide-problem p + p { margin-top: 1.25rem; }
+
+    /* --- ANALYSIS: data points --- */
+    .analysis-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    @media (max-width: 640px) { .analysis-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+    .analysis-item .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1; }
+    .analysis-item .desc { color: #BDBDBD; font-size: 0.95rem; line-height: 1.55; margin-top: 0.5rem; }
+
+    /* --- APPROACH: step row --- */
+    .approach-steps { display: flex; flex-direction: column; gap: 1rem; }
+    @media (min-width: 768px) { .approach-steps { flex-direction: row; gap: 0; } }
+    .approach-step { display: flex; gap: 1rem; align-items: flex-start; }
+    @media (min-width: 768px) { .approach-step { flex: 1; } }
+    .approach-step .idx { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: 0.85rem; flex-shrink: 0; margin-top: 0.15rem; }
+    .approach-step h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; }
+    .approach-step p { color: #9A9A9A; font-size: 0.9rem; line-height: 1.6; margin-top: 0.375rem; }
+    @media (min-width: 768px) {
+      .approach-step + .approach-step { border-left: 1px solid #1C1C1C; padding-left: 1.5rem; margin-left: 1.5rem; }
+    }
+
+    /* --- EVALUATION: two columns --- */
+    .eval-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (max-width: 640px) { .eval-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+    .eval-col { background: #141414; border: 1px solid #262626; border-radius: 14px; padding: 1.5rem; }
+    .eval-col h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; }
+    .eval-col p { color: #9A9A9A; font-size: 0.92rem; line-height: 1.65; }
+
+    /* --- OUTCOME: metrics hero (no box) --- */
+    .outcome-metrics { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-bottom: 1.25rem; }
+    .outcome-metrics .metric .value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: clamp(2.75rem, 6vw, 4.5rem); line-height: 1; }
+    .outcome-metrics .metric .cap { color: #9A9A9A; font-size: 0.9rem; margin-top: 0.5rem; }
+    .outcome-note { color: #BDBDBD; font-size: 1rem; line-height: 1.65; max-width: 560px; }
+
+    /* --- REFLECTIONS: light --- */
+    .reflect-body { max-width: 620px; }
+    .reflect-body p { color: #BDBDBD; font-size: 1rem; line-height: 1.7; }
+    .reflect-body p + p { margin-top: 1.25rem; }
+    .reflect-stack-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #6B6B6B; margin: 1.75rem 0 0.75rem; }
+    .reflect-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .reflect-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; }
+
+    /* === VERDICT / GTM CARD === */
+    .verdict-card { background: #141414; border: 1px solid #262626; border-radius: 16px; padding: 1.75rem; }
+    @media (max-width: 640px) { .verdict-card { padding: 1.25rem; } }
+    .verdict-statement { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #fff; font-size: clamp(1.4rem, 3vw, 2.1rem); line-height: 1.25; letter-spacing: -0.01em; }
+    .verdict-statement .hl { color: #FF4D3D; }
+    .verdict-sub { color: #9A9A9A; font-size: 0.95rem; line-height: 1.65; margin-top: 1rem; max-width: 620px; }
+    .gtm-phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #262626; margin-top: 1.75rem; border: 1px solid #262626; border-radius: 12px; overflow: hidden; }
+    @media (max-width: 768px) { .gtm-phases { grid-template-columns: 1fr; } }
+    .gtm-phase { background: #141414; padding: 1.25rem; }
+    .gtm-phase .ph { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: 0.85rem; letter-spacing: 0.05em; }
+    .gtm-phase h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; margin-top: 0.4rem; }
+    .gtm-phase p { color: #9A9A9A; font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem; }
+    .verdict-segments { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+    .verdict-segment { flex: 1 1 240px; border: 1px solid #262626; border-radius: 12px; padding: 1rem 1.25rem; background: rgba(20,20,20,0.5); }
+    .verdict-segment .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #FF4D3D; font-weight: 500; }
+    .verdict-segment h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1rem; margin-top: 0.4rem; }
+    .verdict-segment p { color: #9A9A9A; font-size: 0.85rem; line-height: 1.55; margin-top: 0.4rem; }
+    .verdict-segment.secondary { border-style: dashed; border-color: #383838; }
+    .verdict-segment.secondary .tag { color: #9A9A9A; }
+
+    /* === NAV === */
+    .slide-nav { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 0.625rem; background: rgba(10,10,10,0.85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid #262626; border-radius: 9999px; padding: 0.5rem 1rem; transition: opacity 0.4s ease; }
+    .slide-nav.nav-hidden { opacity: 0; pointer-events: none; }
+    .slide-nav button { border: none; cursor: pointer; font-size: 12px; }
+    .nav-arrow { width: 28px; height: 28px; border-radius: 50%; background: #141414; border: 1px solid #262626; color: #fff; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+    .nav-arrow:hover { border-color: #FF4D3D; color: #FF4D3D; }
+    .nav-arrow:disabled { opacity: 0.25; cursor: default; }
+    .nav-counter { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: #6B6B6B; min-width: 30px; text-align: center; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: #262626; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+    .nav-dot.active { background: #FF4D3D; transform: scale(1.3); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .context-bg::before, .context-bg .particle { animation: none !important; }
+      .context-inner > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+      [data-anim] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <nav class="container-x">
+      <a href="../index.html" class="wordmark">Ajith Iyer<span>.</span></a>
+      <div class="header-links">
+        <a href="../index.html#work">Work</a>
+        <a href="../index.html#contact" class="cta-btn">Get in touch</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTEXT HERO -->
+  <section class="context-section" id="context">
+    <div class="context-bg">
+      <span class="particle" style="width:5px;height:5px;left:12%;top:78%;animation-duration:19s;"></span>
+      <span class="particle" style="width:7px;height:7px;left:68%;top:82%;animation-duration:23s;animation-delay:3s;"></span>
+      <span class="particle" style="width:4px;height:4px;left:45%;top:90%;animation-duration:17s;animation-delay:6s;"></span>
+    </div>
+    <div class="content-shell">
+      <div class="context-inner">
+        <a class="back-btn" href="../index.html#work"><i class="fa-solid fa-arrow-left"></i> Back to work</a>
+        <p class="context-eyebrow">proj_02 &middot; Deep-Tech Consulting</p>
+        <h1 class="context-title">Quantum Tech<br />Verdict<span class="period">.</span></h1>
+        <p class="context-subtitle">An engagement to turn a deep-tech platform with no confirmed market into a defensible go/no-go call.</p>
+        <div class="context-tags">
+          <span>Customer Discovery</span><span>TRL Assessment</span><span>GTM Strategy</span><span>NISQ</span>
+        </div>
+        <div class="context-blurb">
+          <p class="context-blurb-label"><span class="n">00</span> / context</p>
+          <p>The client was a University of Maryland I-Corps venture with a quantum optimization and control platform. Strong technology, no confirmed market. Three options looked plausible internally, and none had been tested with a customer. I owned the assessment: the interviews, the analysis, and the final recommendation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAROUSEL -->
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+
+      <!-- 1: PROBLEM -->
+      <div class="carousel-slide" data-i="0">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">01</span><span class="label">Problem</span><span class="rule"></span></div>
+          <div class="slide-problem">
+            <p data-anim>The platform could serve three markets: computer science, defense and logistics, and energy grid optimization. Each had a sponsor inside the team. None had been tested with a customer.</p>
+            <p data-anim>The wrong call would cost years of a small team's runway. The engagement was framed around one question: which market, and how do we know?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2: ANALYSIS -->
+      <div class="carousel-slide" data-i="1">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">02</span><span class="label">Situation analysis</span><span class="rule"></span></div>
+          <p data-anim style="color:#E8E8E8;font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.6;font-weight:500;max-width:700px;margin-bottom:1.75rem;">One pattern did the work. Industry expectations run about a decade ahead of the hardware. Fault-tolerant quantum is not available, so value has to come from current NISQ-class devices. That gap is why most quantum commercialization stalls.</p>
+          <div class="analysis-grid">
+            <div class="analysis-item" data-anim><div class="num">25</div><div class="desc">structured interviews, mapped from end users to the decision makers and influencers behind a purchase.</div></div>
+            <div class="analysis-item" data-anim><div class="num">~90%</div><div class="desc">drug-trial failure rate that quantum molecular screening can attack.</div></div>
+            <div class="analysis-item" data-anim><div class="num">$160B</div><div class="desc">total drug-discovery market projected for 2034. The quantum slice is the fast-growing part.</div></div>
+            <div class="analysis-item" data-anim><div class="num">~10 yr</div><div class="desc">before fault-tolerant hardware arrives. The only value today is what NISQ devices can deliver.</div></div>
+          </div>
+          <p data-anim style="color:#9A9A9A;margin-top:1.75rem;max-width:560px;line-height:1.65;">Drug discovery kept surfacing in the interviews, often unprompted. That is where the evidence pointed.</p>
+        </div>
+      </div>
+
+      <!-- 3: APPROACH -->
+      <div class="carousel-slide" data-i="2">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">03</span><span class="label">Approach</span><span class="rule"></span></div>
+          <div class="approach-steps">
+            <div class="approach-step" data-anim><span class="idx">01</span><div><h4>The recommendation was locked to a rule before the interviews</h4><p>A candidate earned a recommendation only if roughly 30% of interviews independently corroborated it. Below that bar, any market looks good in a deck.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">02</span><div><h4>Map the market through the buyer</h4><p>Interviews traced users, decision makers, and the people who influence a purchase. As a finding crystallized, I extended the network to the engineers and managers who would use the platform.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">03</span><div><h4>Score every candidate on the same four criteria</h4><p>Market size, technology fit, customer readiness, and time to value. Applied identically to each candidate, then weighed against the interview evidence.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: EVALUATION -->
+      <div class="carousel-slide" data-i="3">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">04</span><span class="label">Evaluation</span><span class="rule"></span></div>
+          <p data-anim style="color:#C4C4C4;font-size:1rem;line-height:1.65;max-width:620px;margin-bottom:1.5rem;">The same criteria were applied to all three candidates. Two were ruled out for entry. One earned the recommendation.</p>
+          <div class="eval-grid">
+            <div class="eval-col" data-anim><h4>Computer science, defense, logistics</h4><p>No-go for entry. Incumbents are entrenched and procurement runs long, and the hardware gap makes that wait worse.</p></div>
+            <div class="eval-col" data-anim><h4>Energy grid optimization</h4><p>Hold. The need is real, but infrastructure lock-in and multi-year sales cycles outweigh the near-term value.</p></div>
+            <div class="eval-col" data-anim><h4>Pharma, drug discovery</h4><p>Go. Molecular optimization is NISQ-compatible, sits inside a $160B market, and was the only candidate that cleared the corroboration bar.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: OUTCOME -->
+      <div class="carousel-slide" data-i="4">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">05</span><span class="label">Outcome</span><span class="rule"></span></div>
+          <div class="outcome-metrics">
+            <div class="metric" data-anim><div class="value">25+</div><div class="cap">customer interviews behind the verdict</div></div>
+            <div class="metric" data-anim><div class="value">1</div><div class="cap">market chosen: drug discovery</div></div>
+            <div class="metric" data-anim><div class="value">3-Phase</div><div class="cap">GTM plan adopted by the team</div></div>
+          </div>
+          <p class="outcome-note" data-anim>Drug discovery became the primary focus, and the team adopted the three-phase plan. The control angle became a defined next test instead of a claim: interview quantum hardware control engineers before treating them as a second segment.</p>
+        </div>
+      </div>
+
+      <!-- 6: VERDICT / GTM -->
+      <div class="carousel-slide" data-i="5">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">06</span><span class="label">Verdict &amp; GTM</span><span class="rule"></span></div>
+          <div class="verdict-card" data-anim>
+            <p class="verdict-statement">Go on <span class="hl">drug discovery</span> as the entry market.</p>
+            <p class="verdict-sub">The tradeoff is explicit. The quantum slice of the drug-discovery market is still small, and I accepted that in exchange for time to value. When fault-tolerant hardware is a decade out, a market you can serve with current devices beats a bigger one locked to that wait.</p>
+            <p class="verdict-sub">Re-evaluation trigger: if no startup pilot is signed by the end of phase one, the call gets revisited.</p>
+            <div class="gtm-phases">
+              <div class="gtm-phase"><div class="ph">Phase 1</div><h4>Startup pilots</h4><p>Prove the near-term hybrid with pharma startups that will experiment for an edge. This is also the cheapest way to get real revenue and CAC data.</p></div>
+              <div class="gtm-phase"><div class="ph">Phase 2</div><h4>Enterprise pharma</h4><p>Convert pilot evidence into partnerships, the pattern Boehringer Ingelheim and Roche already run with quantum suppliers.</p></div>
+              <div class="gtm-phase"><div class="ph">Phase 3</div><h4>Test the control segment</h4><p>Interview quantum hardware teams before building for them. The research proves the technology; only customers can prove the market.</p></div>
+            </div>
+            <div class="verdict-segments">
+            <div class="verdict-segment"><div class="tag">// primary · recommended</div><h4>Pharma drug discovery</h4><p>Computational chemists and R&amp;D leaders. Molecular optimization is NISQ-compatible and sits inside a large market.</p></div>
+            <div class="verdict-segment secondary"><div class="tag">// next test</div><h4>Quantum hardware / control</h4><p>Control engineers and VPs of engineering at quantum computing companies. Technically proven in published work, set for customer interviews in phase three.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7: REFLECTIONS -->
+      <div class="carousel-slide" data-i="6">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">07</span><span class="label">Reflections</span><span class="rule"></span></div>
+          <div class="reflect-body">
+            <p data-anim>What worked: the interviews turned a plausible bet into a call with a rule behind it. The readiness gap made the decision legible, and the three-phase plan gave the verdict an execution path.</p>
+            <p data-anim>What I would test next: validate revenue and CAC economics through the startup pilots, and interview the control segment before pricing it as its own market. Both are the cheapest ways to confirm the call, and both are within reach of a single pilot round.</p>
+          </div>
+          <p class="reflect-stack-label" data-anim>stack</p>
+          <div class="reflect-tags" data-anim>
+            <span>Customer Discovery</span><span>TRL Assessment</span><span>GTM Strategy</span><span>NISQ</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NAV -->
+    <nav class="slide-nav" aria-label="Slide navigation">
+      <button class="nav-arrow" id="prevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+      <span class="nav-counter" id="counter">1 / 7</span>
+      <div id="dots" style="display:flex;gap:6px;"></div>
+      <button class="nav-arrow" id="nextBtn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+  </div>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    let cur = 0;
+
+    const dotsWrap = document.getElementById('dots');
+    for (let i = 0; i < total; i++) {
+      const b = document.createElement('button');
+      b.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Slide ' + (i + 1));
+      b.onclick = () => go(i);
+      dotsWrap.appendChild(b);
+    }
+    const dots = dotsWrap.querySelectorAll('.nav-dot');
+    const counter = document.getElementById('counter');
+
+    function go(i) {
+      if (i < 0 || i >= total) return;
+      slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+    }
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          cur = parseInt(e.target.dataset.i, 10);
+          dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+          counter.textContent = (cur + 1) + ' / ' + total;
+          document.getElementById('prevBtn').disabled = cur === 0;
+          document.getElementById('nextBtn').disabled = cur === total - 1;
+          animate(e.target);
+        }
+      });
+    }, { root: carousel, threshold: 0.55 });
+    slides.forEach(s => obs.observe(s));
+
+    document.getElementById('prevBtn').onclick = () => { if (cur > 0) go(cur - 1); };
+    document.getElementById('nextBtn').onclick = () => { if (cur < total - 1) go(cur + 1); };
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(cur + 1);
+      if (e.key === 'ArrowLeft') go(cur - 1);
+    });
+
+    /* Show the dot-nav only while the carousel is on screen; otherwise fade it out */
+    const slideNavEl = document.querySelector('.slide-nav');
+    const navIO = new IntersectionObserver(entries => {
+      entries.forEach(e => slideNavEl.classList.toggle('nav-hidden', !e.isIntersecting));
+    }, { threshold: 0.15 });
+    navIO.observe(carousel);
+
+    function animate(slide) {
+      if (!slide.dataset.animFired) {
+        slide.dataset.animFired = '1';
+        slide.querySelectorAll('[data-anim]').forEach((el, i) => {
+          setTimeout(() => el.classList.add('in'), reduced ? 0 : i * 90);
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

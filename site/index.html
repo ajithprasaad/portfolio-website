@@ -188,17 +188,17 @@
           <a href="#experience" class="inline-flex items-center rounded-lg border border-line hover:border-white text-white font-medium px-6 py-3 transition-colors">View experience</a>
         </div>
       </div>
-      <div class="relative justify-self-center md:justify-self-end">
+      <!-- <div class="relative justify-self-center md:justify-self-end">
         <div class="absolute -top-6 -left-6 grid grid-cols-3 gap-2" aria-hidden="true">
           <span class="w-3 h-3 bg-accent"></span><span class="w-3 h-3 bg-surface-2"></span><span class="w-3 h-3 bg-surface-2"></span>
           <span class="w-3 h-3 bg-surface-2"></span><span class="w-3 h-3 bg-accent"></span><span class="w-3 h-3 bg-surface-2"></span>
         </div>
-        <!-- <img src="https://placehold.co/360x440/141414/9A9A9A?text=Ajith+Iyer" alt="Portrait" class="rounded-2xl border border-line w-[280px] sm:w-[360px]" /> -->
+        <img src="https://placehold.co/360x440/141414/9A9A9A?text=Ajith+Iyer" alt="Portrait" class="rounded-2xl border border-line w-[280px] sm:w-[360px]" /> 
         <div class="absolute -bottom-6 -right-6 grid grid-cols-3 gap-2" aria-hidden="true">
           <span class="w-3 h-3 bg-surface-2"></span><span class="w-3 h-3 bg-accent"></span><span class="w-3 h-3 bg-surface-2"></span>
           <span class="w-3 h-3 bg-surface-2"></span><span class="w-3 h-3 bg-surface-2"></span><span class="w-3 h-3 bg-accent"></span>
         </div>
-      </div>
+      </div> -->
     </section>
 
     <!-- METRIC STRIP -->
@@ -438,7 +438,7 @@
         <div class="space-y-6 text-sm">
           <a href="mailto:ajithprasaad95@gmail.com" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-envelope text-accent"></i> ajithprasaad95@gmail.com</a>
           <a href="https://www.linkedin.com/in/ajithiyer" target="_blank" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-brands fa-linkedin text-accent"></i> linkedin.com/in/ajithiyer</a>
-          <a href="https://calendly.com/ajithprasaad95/30min" target="_blank" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-calendar-check text-accent"></i> Schedule a meeting</a>
+          <a href="https://calendly.com/ajithiyer/30min" target="_blank" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-calendar-check text-accent"></i> Schedule a meeting</a>
           <!-- TODO(ajith): wire up resume.pdf when the file exists -->
           <a href="https://drive.google.com/file/d/1XaOq8_KTMQcqLRopq5AVUnsLVkTEjhmY/view?usp=sharing" class="flex items-center gap-3 text-white hover:text-accent transition-colors"><i class="fa-solid fa-file-pdf text-accent"></i> resume.pdf</a>
         </div>
@@ -466,19 +466,19 @@
 
   <script>
   const CS = [
-    { id:"cs-foodbank", num:"01", title:"Food Bank Customer Service Automation", domain:"AI & LLMOps", icon:"fa-solid fa-robot", slug:"foodbank-chatbot", status:"Available to read",
-      problem:"CAFB distributed 78M+ meals across 12 warehouses during COVID — double the prior year, with 40% fewer volunteers. Staff were drowning in repetitive support tickets instead of serving the community.",
-      approach:"Designed a RAG-based chatbot over historical JIRA tickets — semantic retrieval, multi-provider LLM generation, intelligent triage with human-agent handoff.",
+    { id:"cs-foodbank", num:"01", title:"Customer Service Automation", domain:"AI & LLMOps", icon:"fa-solid fa-robot", slug:"foodbank-chatbot", status:"Available to read",
+      problem:"CAFB distributed 78M+ meals across 12 warehouses during COVID which was double the prior year, with 40% fewer volunteers. Staff were drowning in repetitive support tickets instead of serving the community.",
+      approach:"Designed a automated chatbot that learned from historical JIRA tickets. The automation solution was designed with semantic retrieval, multi-provider LLM generation, intelligent triage with human-agent handoff.",
       outcome:"Built as a case project. Automated responses validated against manual baseline with comparable accuracy. Architecture supports production deployment with cost-adaptable provider switching (DeepSeek/OpenAI/Gemini).",
-      metrics:["78M+ meals served","40% volunteer gap","Multi-provider LLM"],
+      metrics:["More meals served","40% volunteer gap","Multi-provider LLM"],
       stack:["RAG","ChromaDB","DeepSeek","Streamlit","Python"] },
-    { id:"cs-quantum", num:"02", title:"Quantum Tech \u2192 Market Verdict", domain:"Deep-Tech Consulting", icon:"fa-solid fa-microscope", status:"In progress",
-      problem:"An emerging quantum-computing venture needed an objective commercialization verdict: is the technology ready, who actually cares, and is there a viable path to revenue?",
-      approach:"Ran 25+ stakeholder interviews to map adoption barriers and the competitive landscape; grounded the recommendation in a technology-readiness (TRL) assessment.",
-      outcome:"Go/no-go recommendation delivered with a 3-phase GTM plan, adopted by the venture team as their commercialization roadmap.",
-      metrics:["25+ interviews","TRL assessment","3-phase GTM"],
-      stack:["Customer Discovery","Competitive Analysis","GTM Strategy"] },
-    { id:"cs-agent", num:"03", title:"AI Job-Search Copilot", domain:"Open Source", icon:"fa-solid fa-robot", status:"In progress",
+    { id:"cs-quantum", num:"02", title:"Quantum Tech Verdict", domain:"Deep-Tech Consulting", icon:"fa-solid fa-microscope", slug:"quantum-tech-verdict", status:"Available to read",
+      problem:"A quantum venture had a powerful platform and no confirmed market. Three candidate markets looked plausible from the inside, and none had been tested against a customer.",
+      approach:"Set a decision rule before the interviews: a candidate earned a recommendation only with roughly 30% independent corroboration. Ran 25 structured interviews mapped across users, decision makers, and influencers.",
+      outcome:"Drug discovery selected as the entry market, with a three-phase plan adopted by the venture team. The control angle became a defined next test rather than a broad claim.",
+      metrics:["25+ interviews","1 focus picked","3-phase GTM"],
+      stack:["Customer Discovery","TRL Assessment","GTM Strategy","NISQ"] },
+    { id:"cs-agent", num:"03", title:"AI Job-Search Copilot", domain:"Open Source", icon:"fa-solid fa-robot", status:"Build In Progress",
       problem:"My own job search: tailoring resumes, analyzing postings, drafting outreach, tracking applications. All manual, all scattered across tabs and spreadsheets.",
       approach:"Built it as a product instead: FastAPI backend, Claude API optimization, RAG over my own experience graph, gamified application tracking, agentic outreach drafting. It's the tool running this very campaign.",
       outcome:"Shipped and dogfooded daily across every application this search has generated. Live demo and repo available on request.",
