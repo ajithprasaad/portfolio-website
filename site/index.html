@@ -214,8 +214,7 @@
         <div>
           <h2 class="font-display font-bold text-white text-3xl md:text-4xl leading-tight tracking-[-0.02em]">I build products end to end</h2>
           <p class="mt-6 text-lg leading-relaxed"><strong class="text-white font-semibold">An engineer who moved into product.</strong> Seven years of microservices, distributed systems, and high-stakes enterprise plumbing gave me the habits; today those habits ship as RAG pipelines, agentic workflows, and rubric-based evals built to be production-safe.</p>
-          <p class="mt-4 text-lg leading-relaxed"><strong class="text-white font-semibold">A product person who proves with numbers.</strong> On an AI hiring platform serving 120+ B2B clients, I ran the A/B tests that lifted engagement <strong class="text-white font-semibold">17%</strong> (68%&rarr;85%), cut per-token costs ~20% with prompt compression and model tiering, and turned 50+ technical demos into partnerships.</p>
-          <p class="mt-4 text-lg leading-relaxed"><strong class="text-white font-semibold">A strategist with a builder&rsquo;s instincts.</strong> CS from MIT Pune + MBA from UMD Smith, so I move between the code and the commercialization: GTM for a deep-tech venture, pricing across a 150-school network, a six-person consulting team. Today I advise strategy for a civic nonprofit, coach founders before their first raise, and build AI tools full-time.</p>
+          <p class="mt-4 text-lg leading-relaxed"><strong class="text-white font-semibold">A product person with builder&rsquo;s instincts.</strong>CS from MIT Pune + MBA from UMD Smith, so I move between the code and the product commercialization: Today I advise strategy for a civic nonprofit, coach founders before their first raise, and build AI tools full-time.</p>
           <dl class="mt-8 grid sm:grid-cols-3 gap-4">
             <div class="rounded-2xl border border-line bg-gradient-to-b from-accent/[0.06] to-transparent p-5">
               <div class="flex flex-wrap items-start justify-between gap-2">
@@ -459,7 +458,7 @@
       outcome:"Built as a case project. Automated responses validated against manual baseline with comparable accuracy. Architecture supports production deployment with cost-adaptable provider switching (DeepSeek/OpenAI/Gemini).",
       metrics:["More meals served","40% volunteer gap","Multi-provider LLM"],
       stack:["RAG","ChromaDB","DeepSeek","Streamlit","Python"] },
-    { id:"cs-quantum", num:"02", title:"Quantum Tech Verdict", domain:"Deep-Tech Consulting", icon:"fa-solid fa-microscope", slug:"quantum-tech-verdict", status:"Available to read",
+    { id:"cs-quantum", num:"02", title:"Quantum Tech GTM Verdict", domain:"Deep-Tech Consulting", icon:"fa-solid fa-microscope", slug:"quantum-tech-verdict", status:"Available to read",
       problem:"A quantum venture had a powerful platform and no confirmed market. Three candidate markets looked plausible from the inside, and none had been tested against a customer.",
       approach:"Set a decision rule before the interviews: a candidate earned a recommendation only with roughly 30% independent corroboration. Ran 25 structured interviews mapped across users, decision makers, and influencers.",
       outcome:"Drug discovery selected as the entry market, with a three-phase plan adopted by the venture team. The control angle became a defined next test rather than a broad claim.",
@@ -475,19 +474,18 @@
 
   const STACK = [
     { cat:"// languages", items:[
-      { name:"Python", rating:5 },
-      { name:"Node.js", rating:4 },
+      { name:"Node.js", rating:4.5 },
       { name:"TypeScript", rating:4 },
-      { name:"Java", rating:3 },
-      { name:"SQL", rating:4 }
+      { name:"Python", rating:3.5 },
+      { name:"Java", rating:3.5 },
+      { name:"SQL", rating:4.5 }
     ]},
     { cat:"// ai & llmops", items:[
       { name:"LangChain", rating:4 },
-      { name:"LLM APIs (Claude / GPT)", rating:5 },
       { name:"RAG Pipelines", rating:4 },
-      { name:"Agentic Systems", rating:4 },
+      { name:"Agentic Systems", rating:3 },
       { name:"MLOps", rating:3 },
-      { name:"Eval / Guardrails", rating:4 }
+      { name:"Eval / Guardrails", rating:3 }
     ]},
     { cat:"// product", items:[
       { name:"LLM Product Lifecycle", rating:5 },
@@ -505,18 +503,21 @@
       { name:"Microservices", rating:4 },
       { name:"Event-Driven", rating:4 },
       { name:"OAuth / SAML / IAM", rating:5 },
-      { name:"AWS", rating:4 }
+      { name:"AWS/Azure", rating:3 },
+      { name:"Kubernetes", rating:4 },
+      { name:"Docker", rating:4 }
+
     ]}
   ];
 
   /* Readings data */
   const READINGS = [
     { type:"book", status:"now reading", title:"The Alignment Problem", author:"Brian Christian", note:"How do you ensure AI does what you actually want? Christian maps the field's hardest open problem.", img:"https://m.media-amazon.com/images/I/71buTbF1YDL._SL1200_.jpg" },
+    { type:"book", status:"queued", title:"Never Split The Difference", author:"Chris Voss", note:"a practical guide by former FBI lead international kidnapping negotiator Christopher Voss and co-author Tahl Raz", img:"https://m.media-amazon.com/images/I/81A406lSphL._AC_UF1000,1000_QL80_.jpg"},
     { type:"book", status:"queued", title:"Crossing the Chasm", author:"Geoffrey Moore", note:"The gap between early adopters and the mainstream is where products go to die. Still the best GTM framework.", img:"https://m.media-amazon.com/images/I/41FnvYAM2HL._SY445_SX342_FMwebp_.jpg" },
     { type:"book", status:"queued", title:"Quantitative Trading", author:"Ernie Chan", note:"If you think product intuition matters, try building a trading bot — the market is brutally quantitative.", img:"https://m.media-amazon.com/images/I/51tV7QtYQ7L._SY445_SX342_FMwebp_.jpg" },
-    { type:"book", status:"queued", title:"Advances in Financial ML", author:"Marcos Lopez de Prado", note:"Traditional ML fails on financial data. This book is a reality check for anyone applying AI to markets.", img:"https://placehold.co/120x160/141414/FF4D3D?text=Financial%0AML" },
     { type:"podcast", status:"queued", title:"Huberman Labs", author:"Dr. Andrew Huberman", note:"Discusses science and science-based tools for everyday life", img:"https://cdn.prod.website-files.com/64416928859cbdd1716d79ce/6441c30ef12f50bc3f2449da_huberman-lab-podcast-cover.webp" },
-    { type:"podcast", status:"queued", title:"AI Native Dev", author:"Andreessen Horowitz", note:"Best for understanding for deep technical insights, industry trends, or community-driven discussions.", img:"https://yt3.googleusercontent.com/g_Cr1ecIwxiCgCIhMFWPGd-2TOv3xquMGsGyKQEHdp4LDf20GdFrZYhOnx8rcPACgOM9vGZM0A=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" },
+    { type:"podcast", status:"queued", title:"AI Native Dev", author:"Guy Podjarny and Simon Maple", note:"Best for understanding for deep technical insights, industry trends, or community-driven discussions.", img:"https://yt3.googleusercontent.com/g_Cr1ecIwxiCgCIhMFWPGd-2TOv3xquMGsGyKQEHdp4LDf20GdFrZYhOnx8rcPACgOM9vGZM0A=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" },
     { type:"podcast", status:"queued", title:"20VC with Harry Stebbings", author:"Harry Stebbings", note:"Long-form conversations with AI researchers and investors", img:"https://media.licdn.com/dms/image/v2/C560BAQHFwxfTWDvtAg/company-logo_200_200/company-logo_200_200/0/1630654541042/20vc_logo?e=1788998400&v=beta&t=Cwcod1ztLgJTScDmBr7C0CMQQsQmetP3Vfzjlk7MoGA" },
     { type:"paper", status:"finished", title:"Attention Is All You Need", author:"Vaswani et al.", note:"The paper that started the transformer revolution. The architecture is elegant in its simplicity.", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9GXDD09KkOaH_n_BcKnUeSbM14V-zCz6mIrxx961p-LtGacFl7RoyVxdr&s=10" },
     { type:"paper", status:"finished", title:"Chain-of-Thought Prompting", author:"Wei et al.", note:"LLMs reason better when you let them think step by step. Simple technique, massive impact on RAG quality.", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq50pGjhc71zrFoJZdfMv5-mpOXIFDep4rsWN_OygyXw&s=10" }
