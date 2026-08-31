@@ -115,21 +115,15 @@
     .reply-block .k { color: #FF4D3D; }
     .reply-block .v { color: #fff; }
     .reply-block .s { color: #6B6B6B; }
-    /* Year-band (Gantt) experience timeline */
-    /* Year-band experience timeline */
-    .yb-cont { display: flex; align-items: stretch; margin-bottom: 0.75rem; }
-    .yb-seg { display: flex; flex-direction: column; gap: 4px; min-width: 44px; }
-    .yb-seg > .yb-bar { width: 100%; }
-    .yb-seg .yb-cap { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: #6B6B6B; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px; }
-    .yb-seg .yb-cap2 { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: #6B6B6B; line-height: 1.35; padding-right: 10px; }
-    .yb-seg .yb-cap2 .yb-l1 { font-weight: 500; color: #9A9A9A; white-space: nowrap; }
-    .yb-seg .yb-cap2 .yb-l2 { display: block; color: #6B6B6B; white-space: nowrap; }
-    .yb-seg .yb-stack { display: flex; flex-direction: column; gap: 2px; }
-    .yb-seg .yb-stack-item { display: flex; flex-direction: column; gap: 2px; }
-    .yb-seg .yb-stack-item .yb-bar { width: 100%; }
-    .yb-bar { height: 7px; border-radius: 9999px; background: rgba(255,77,61,0.45); }
-    .yb-bar.long { background: #FF4D3D; }
-    .yb-bar.now { background: #FF4D3D; box-shadow: 0 0 8px rgba(255,77,61,0.4); }
+    /* Experience vertical timeline */
+    .tl { position: relative; padding-left: 2.5rem; }
+    .tl::before { content: ""; position: absolute; left: 8px; top: 0.5rem; bottom: 0.5rem; width: 2px; background: #262626; }
+    .tl article { position: relative; }
+    .tl article::before {
+      content: ""; position: absolute; left: -38px; top: 1.9rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #FF4D3D; box-shadow: 0 0 0 4px #0d0d0d;
+    }
     .yb-era { border: 1px solid rgba(255,77,61,0.18); border-radius: 16px; }
     /* Era collapsible */
     .era-toggle { cursor: pointer; }
@@ -137,8 +131,10 @@
     .era-toggle .chev { transition: transform 0.25s ease; }
     .era-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
     @media (max-width: 640px) {
-      .yb-cont { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .yb-seg { min-width: 56px; }
+      .yb-era { padding: 1.25rem; }
+      .tl { padding-left: 1.75rem; }
+      .tl::before { left: 5px; }
+      .tl article::before { left: -28px; top: 1.85rem; }
     }
     /* Side nav indicator, vertical strip on large screens only */
     .side-nav { position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 45; display: flex; flex-direction: column; align-items: stretch; gap: 0.75rem; }
@@ -330,30 +326,7 @@
           </button>
 
           <div id="mba-body" class="era-body mt-6">
-            <div class="yb-cont" role="img" aria-label="MBA and consulting roles, 2024 - 2026">
-              <div class="yb-seg" style="flex:3 1 0%; min-width:150px">
-                <div class="yb-bar" aria-hidden="true"></div>
-                <span class="yb-cap2" aria-label="Consulting Fellow, Impact Consulting Fellowship, Oct 2024 - Dec 2024"><span class="yb-l1">Consulting Fellow &middot; 2024</span><span class="yb-l2">Impact Consulting Fellowship</span></span>
-              </div>
-              <div class="yb-seg" style="flex:9 1 0%; min-width:200px">
-                <div class="yb-stack">
-                  <div class="yb-stack-item" aria-label="MBA Summer Intern, Product Discovery & Roadmap, Center for Educational Innovation, May 2025 - Aug 2025">
-                    <div class="yb-bar" aria-hidden="true"></div>
-                    <span class="yb-cap2"><span class="yb-l1">MBA Intern &middot; 2025</span><span class="yb-l2">CEI &amp; Improvement</span></span>
-                  </div>
-                  <div class="yb-stack-item" aria-label="Commercialization Consultant, Mtech Ventures, May 2025 - Aug 2025">
-                    <div class="yb-bar" aria-hidden="true"></div>
-                    <span class="yb-cap2"><span class="yb-l1">Commercialization &middot; 2025</span><span class="yb-l2">Mtech Ventures</span></span>
-                  </div>
-                </div>
-              </div>
-              <div class="yb-seg" style="flex:3 1 0%; min-width:170px">
-                <div class="yb-bar now" aria-hidden="true"></div>
-                <span class="yb-cap2" aria-label="Product Strategy Lead, Crossing Party Lines, Jul 2026 - Present"><span class="yb-l1">Product Strategy Lead &middot; now</span><span class="yb-l2">Crossing Party Lines</span></span>
-              </div>
-            </div>
-
-            <div class="grid gap-4">
+            <div class="tl grid gap-6">
             <article class="rounded-2xl border border-line bg-ink/40 p-6">
               <div class="md:flex md:items-baseline md:justify-between gap-4">
                 <h3 class="font-display font-semibold text-white text-xl">Product Strategy Lead</h3>
@@ -406,34 +379,15 @@
         </div>
 
         <!-- FULL-TIME Experience -->
-        <div class="py-8">
+        <div class="yb-era fulltime p-6 md:p-8 bg-gradient-to-b from-accent/[0.07] to-transparent">
           <button type="button" class="era-toggle w-full flex items-center gap-3 text-left" aria-expanded="true" aria-controls="fulltime-body">
             <span id="fulltime-head" class="era-head-text text-[13px] uppercase tracking-[0.12em] text-accent font-medium transition-colors">Full-Time Experience &middot; 2017 &ndash; 2024</span>
             <i class="fa-solid fa-chevron-down chev text-accent text-xs"></i>
           </button>
 
           <div id="fulltime-body" class="era-body mt-6">
-            <div class="yb-cont" role="img" aria-label="Full-time experience, 2017 - 2024">
-              <div class="yb-seg" style="flex:12 1 0%; min-width:110px">
-                <div class="yb-bar" aria-hidden="true"></div>
-                <span class="yb-cap" aria-label="Compare Munafa, Jun 2017 - Jun 2018">Compare Munafa &middot; 2017&ndash;18</span>
-              </div>
-              <div class="yb-seg" style="flex:16 1 0%; min-width:120px">
-                <div class="yb-bar" aria-hidden="true"></div>
-                <span class="yb-cap" aria-label="Monocept, Jul 2018 - Nov 2019">Monocept &middot; 2018&ndash;19</span>
-              </div>
-              <div class="yb-seg" style="flex:11 1 0%; min-width:110px">
-                <div class="yb-bar" aria-hidden="true"></div>
-                <span class="yb-cap" aria-label="SMEcorner, Nov 2019 - Oct 2020">SMEcorner &middot; 2019&ndash;20</span>
-              </div>
-              <div class="yb-seg" style="flex:40 1 0%; min-width:200px">
-                <div class="yb-bar long" aria-hidden="true"></div>
-                <span class="yb-cap" aria-label="Talview, Feb 2021 - May 2024">Talview &middot; 2021&ndash;24</span>
-              </div>
-            </div>
-
             <!-- cards, newest full-time first -->
-            <div class="grid gap-4">
+            <div class="tl grid gap-6">
             <article class="rounded-2xl border border-line bg-surface p-6">
               <div class="md:flex md:items-baseline md:justify-between gap-4">
                 <h3 class="font-display font-semibold text-white text-xl">Senior Product Manager</h3>
