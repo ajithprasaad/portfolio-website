@@ -282,7 +282,7 @@
             <dl class="space-y-2 text-sm">
               <div class="flex gap-4"><dt class="text-muted-2 w-16 shrink-0">building</dt><dd class="text-white">AI resume optimizer + agents</dd></div>
               <div class="flex gap-4"><dt class="text-muted-2 w-16 shrink-0">reading</dt><dd class="text-white">Never Split the Difference</dd></div>
-              <div class="flex gap-4"><dt class="text-muted-2 w-16 shrink-0">listening</dt><dd class="text-white">NPR</dd></div>
+              <div class="flex gap-4"><dt class="text-muted-2 w-16 shrink-0">listening</dt><dd class="text-white">AI Native Dev</dd></div>
             </dl>
           </div>
         </aside>
@@ -551,13 +551,14 @@
 
   /* Readings data */
   const READINGS = [
-    { type:"book", status:"now reading", title:"The Alignment Problem", author:"Brian Christian", note:"How do you ensure AI does what you actually want? Christian maps the field's hardest open problem.", img:"https://m.media-amazon.com/images/I/71buTbF1YDL._SL1200_.jpg" },
-    { type:"book", status:"queued", title:"Never Split The Difference", author:"Chris Voss", note:"a practical guide by former FBI lead international kidnapping negotiator Christopher Voss and co-author Tahl Raz", img:"https://m.media-amazon.com/images/I/81A406lSphL._AC_UF1000,1000_QL80_.jpg"},
+    { type:"book", status:"finished", title:"The Power Of A Habit", author:"Charles Duhigg", note:"At the core of every habitual pattern is a habit loop.", img:"https://i0.wp.com/www.charellegriffith.com/wp-content/uploads/2017/09/Book-Review-of-The-Power-of-Habit-Charelle-Reads.jpg?fit=3024%2C3024&ssl=1" },    
+    { type:"book", status:"now reading", title:"Never Split The Difference", author:"Chris Voss", note:"a practical guide by former FBI lead international kidnapping negotiator Christopher Voss and co-author Tahl Raz", img:"https://m.media-amazon.com/images/I/81A406lSphL._AC_UF1000,1000_QL80_.jpg"},
+    { type:"book", status:"queued", title:"The Alignment Problem", author:"Brian Christian", note:"How do you ensure AI does what you actually want? Christian maps the field's hardest open problem.", img:"https://m.media-amazon.com/images/I/71buTbF1YDL._SL1200_.jpg" },
     { type:"book", status:"queued", title:"Crossing the Chasm", author:"Geoffrey Moore", note:"The gap between early adopters and the mainstream is where products go to die. Still the best GTM framework.", img:"https://m.media-amazon.com/images/I/41FnvYAM2HL._SY445_SX342_FMwebp_.jpg" },
     { type:"book", status:"queued", title:"Quantitative Trading", author:"Ernie Chan", note:"If you think product intuition matters, try building a trading bot — the market is brutally quantitative.", img:"https://m.media-amazon.com/images/I/51tV7QtYQ7L._SY445_SX342_FMwebp_.jpg" },
-    { type:"podcast", status:"queued", title:"Huberman Labs", author:"Dr. Andrew Huberman", note:"Discusses science and science-based tools for everyday life", img:"https://cdn.prod.website-files.com/64416928859cbdd1716d79ce/6441c30ef12f50bc3f2449da_huberman-lab-podcast-cover.webp" },
-    { type:"podcast", status:"queued", title:"AI Native Dev", author:"Guy Podjarny and Simon Maple", note:"Best for understanding for deep technical insights, industry trends, or community-driven discussions.", img:"https://yt3.googleusercontent.com/g_Cr1ecIwxiCgCIhMFWPGd-2TOv3xquMGsGyKQEHdp4LDf20GdFrZYhOnx8rcPACgOM9vGZM0A=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" },
-    { type:"podcast", status:"queued", title:"20VC with Harry Stebbings", author:"Harry Stebbings", note:"Long-form conversations with AI researchers and investors", img:"https://media.licdn.com/dms/image/v2/C560BAQHFwxfTWDvtAg/company-logo_200_200/company-logo_200_200/0/1630654541042/20vc_logo?e=1788998400&v=beta&t=Cwcod1ztLgJTScDmBr7C0CMQQsQmetP3Vfzjlk7MoGA" },
+    { type:"podcast", status:"following", title:"Huberman Labs", author:"Dr. Andrew Huberman", note:"Discusses science and science-based tools for everyday life", img:"https://cdn.prod.website-files.com/64416928859cbdd1716d79ce/6441c30ef12f50bc3f2449da_huberman-lab-podcast-cover.webp" },
+    { type:"podcast", status:"following", title:"AI Native Dev", author:"Guy Podjarny and Simon Maple", note:"Best for understanding for deep technical insights, industry trends, or community-driven discussions.", img:"https://yt3.googleusercontent.com/g_Cr1ecIwxiCgCIhMFWPGd-2TOv3xquMGsGyKQEHdp4LDf20GdFrZYhOnx8rcPACgOM9vGZM0A=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj" },
+    { type:"podcast", status:"following", title:"20VC with Harry Stebbings", author:"Harry Stebbings", note:"Long-form conversations with AI researchers and investors", img:"https://media.licdn.com/dms/image/v2/C560BAQHFwxfTWDvtAg/company-logo_200_200/company-logo_200_200/0/1630654541042/20vc_logo?e=1788998400&v=beta&t=Cwcod1ztLgJTScDmBr7C0CMQQsQmetP3Vfzjlk7MoGA" },
     { type:"paper", status:"finished", title:"Attention Is All You Need", author:"Vaswani et al.", note:"The paper that started the transformer revolution. The architecture is elegant in its simplicity.", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9GXDD09KkOaH_n_BcKnUeSbM14V-zCz6mIrxx961p-LtGacFl7RoyVxdr&s=10" },
     { type:"paper", status:"finished", title:"Chain-of-Thought Prompting", author:"Wei et al.", note:"LLMs reason better when you let them think step by step. Simple technique, massive impact on RAG quality.", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq50pGjhc71zrFoJZdfMv5-mpOXIFDep4rsWN_OygyXw&s=10" }
   ];
