@@ -99,6 +99,14 @@
 
     .tour-btn { font-size: 13px; font-weight: 600; padding: 0.625rem 1.25rem; border-radius: 10px; border: 1px solid rgba(255,77,61,0.3); background: rgba(255,77,61,0.1); color: #FF4D3D; cursor: pointer; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
     .tour-btn:hover { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
+    @media (max-width: 480px) {
+      .demo-head { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .demo-head-actions { width: 100%; flex-direction: column; align-items: stretch; }
+      .demo-head-actions .toggle-row { width: 100%; }
+      .toggle-group { flex: 1; }
+      .toggle-btn { flex: 1; justify-content: center; padding: 0.5rem 0.625rem; font-size: 12px; }
+      .tour-btn { width: 100%; justify-content: center; padding: 0.5rem 0.625rem; font-size: 12px; }
+    }
 
     /* Demo body */
     .demo-body { display: flex; gap: 0; background: #141414; border: 1px solid #262626; border-radius: 16px; overflow: hidden; }
@@ -119,7 +127,9 @@
     /* Demo panel */
     .demo-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
     .proto-appbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding: 0.75rem 1rem; background: #0A0A0A; border-bottom: 1px solid #262626; }
-    .pill { font-size: 11px; padding: 4px 10px; border-radius: 9999px; border: 1px solid #262626; color: #9A9A9A; background: #141414; cursor: pointer; transition: all 0.15s; }
+    .pills-scroll { display: flex; gap: 0.5rem; align-items: center; overflow-x: auto; scrollbar-width: none; }
+    .pills-scroll::-webkit-scrollbar { display: none; }
+    .pill { flex-shrink: 0; font-size: 11px; padding: 4px 10px; border-radius: 9999px; border: 1px solid #262626; color: #9A9A9A; background: #141414; cursor: pointer; transition: all 0.15s; }
     .pill.active { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
     .pill:hover { border-color: #FF4D3D; color: #fff; }
     .proto-search { flex: 1; min-width: 160px; background: #141414; border: 1px solid #262626; color: #fff; font-size: 12px; padding: 6px 10px; border-radius: 8px; outline: none; }
@@ -128,8 +138,28 @@
     .proto-select { background: #141414; border: 1px solid #262626; color: #fff; font-size: 11px; padding: 6px 8px; border-radius: 8px; }
     .proto-table-wrap { overflow: auto; flex: 1; background: #0A0A0A; }
     .proto-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+    .proto-table.ss-table { min-width: 1100px; }
     .proto-table th { text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6B6B6B; padding: 8px 10px; border-bottom: 1px solid #1C1C1C; background: #0A0A0A; position: sticky; top: 0; z-index: 1; }
     .proto-table td { padding: 9px 10px; font-size: 12.5px; border-bottom: 1px solid #141414; }
+    @media (max-width: 640px) {
+      .pills-scroll { order: 1; width: 100%; }
+      .proto-search { order: 2; min-width: 0; flex: 1 1 auto; }
+      .proto-select { order: 3; }
+      .proto-table { min-width: 0; }
+      .proto-table th, .proto-table td { overflow-wrap: anywhere; }
+      .proto-table:not(.ss-table) { table-layout: fixed; min-width: 620px; }
+      .proto-table:not(.ss-table) th:first-child, .proto-table:not(.ss-table) td:first-child { width: 28px; }
+      .proto-table:not(.ss-table) th:nth-child(2), .proto-table:not(.ss-table) td:nth-child(2) { width: 42%; }
+      .proto-table:not(.ss-table) th:nth-child(3), .proto-table:not(.ss-table) td:nth-child(3) { width: 16%; }
+      .proto-table:not(.ss-table) th:nth-child(4), .proto-table:not(.ss-table) td:nth-child(4) { width: 22%; }
+      .proto-table.ss-table { min-width: 0; table-layout: fixed; }
+      .proto-table.ss-table th:first-child, .proto-table.ss-table td:first-child { width: 40%; }
+      .proto-table.ss-table th:nth-child(2), .proto-table.ss-table td:nth-child(2) { width: 22%; }
+      .proto-table.ss-table th:nth-child(3), .proto-table.ss-table td:nth-child(3) { width: 24%; }
+      .proto-table.ss-table th:nth-child(4), .proto-table.ss-table td:nth-child(4) { width: 14%; }
+      .proto-table th { padding: 6px 8px; font-size: 10px; }
+      .proto-table td { padding: 7px 8px; font-size: 12px; }
+    }
     .row-live { background: #0A0A0A; cursor: pointer; transition: background 0.12s; }
     .row-live:hover { background: #141414; }
     .row-live.selected { background: rgba(255,77,61,0.07); }
@@ -189,7 +219,7 @@
     .walkthrough-bar .step-actions button:hover { border-color: #FF4D3D; }
     .walkthrough-bar .step-actions button.walk-primary { background: #FF4D3D; border-color: #FF4D3D; }
     .walkthrough-bar .step-actions button.walk-primary:hover { background: #E83C2C; }
-    @media (max-width: 768px) { .walkthrough-tooltip { max-width: 220px; } }
+    @media (max-width: 768px) { .walkthrough-tooltip { max-width: min(280px, calc(100vw - 2rem)); } }
 
     /* === CAROUSEL === */
     .carousel-wrap { position: relative; z-index: 20; max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; padding-bottom: 4rem; }
@@ -352,14 +382,16 @@
         <!-- Demo panel -->
         <div class="demo-panel" id="demoPanel">
           <div class="proto-appbar" id="protoAppbar">
-            <button class="pill active" data-pill="all">All</button>
-            <button class="pill" data-pill="saved">Saved</button>
-            <button class="pill" data-pill="applied">Applied</button>
-            <button class="pill" data-pill="phone_screen">Phone Screen</button>
-            <button class="pill" data-pill="interviewing">Interview</button>
-            <button class="pill" data-pill="offered">Offer</button>
-            <button class="pill" data-pill="rejected">Rejected</button>
-            <button class="pill" data-pill="withdrawn">Withdrawn</button>
+            <div class="pills-scroll">
+              <button class="pill active" data-pill="all">All</button>
+              <button class="pill" data-pill="saved">Saved</button>
+              <button class="pill" data-pill="applied">Applied</button>
+              <button class="pill" data-pill="phone_screen">Phone Screen</button>
+              <button class="pill" data-pill="interviewing">Interview</button>
+              <button class="pill" data-pill="offered">Offer</button>
+              <button class="pill" data-pill="rejected">Rejected</button>
+              <button class="pill" data-pill="withdrawn">Withdrawn</button>
+            </div>
             <input id="protoSearch" class="proto-search" placeholder="Search company or title..." />
             <select id="protoSort" class="proto-select">
               <option value="next_action">Sort: Next Action</option>
@@ -666,6 +698,7 @@
     function render() {
       if (currentView === 'spreadsheet') { renderSpreadsheet(); return; }
       const body = document.getElementById('protoBody');
+      document.querySelector('.proto-table').classList.remove('ss-table');
       document.getElementById('protoHead').innerHTML = '<th style="width:28px;"><input type="checkbox" id="selectAll" /></th><th>Job / Link</th><th>Status</th><th>Next Action</th><th>Priority</th>';
       document.getElementById('protoBulkBar').style.display = 'none';
       let out = apps.filter(a => !a.archived);
@@ -701,15 +734,26 @@
 
     function renderSpreadsheet() {
       const body = document.getElementById('protoBody');
-      document.getElementById('protoHead').innerHTML = '<th>Job Title</th><th>Company</th><th>Status (free text)</th><th>Date Applied</th><th>Source</th><th>Contact</th><th>Notes</th><th>Next Step</th><th>Salary Range</th><th>Location</th><th>Contact Email</th>';
+      document.querySelector('.proto-table').classList.add('ss-table');
       document.getElementById('protoBulkBar').style.display = 'none';
+      const mobile = matchMedia('(max-width:640px)').matches;
       let data = ssApps;
       if (searchQ) { const q = searchQ.toLowerCase(); data = data.filter(a => (a.title + ' ' + a.company).toLowerCase().includes(q)); }
-      body.innerHTML = data.map(a => {
-        const isAlert = a.notes.length > 80;
-        const noteCls = isAlert ? 'ss-note-alert' : 'ss-note-dim';
-        return '<tr style="background:#0A0A0A;"><td style="color:#E8E8E8;font-weight:500;">' + a.title + '</td><td style="color:#BDBDBD;">' + a.company + '</td><td><span class="ss-st-text">' + a.status + '</span></td><td style="color:#BDBDBD;">' + (a.dateApplied || '<span class="ss-stale">—</span>') + '</td><td class="ss-loc">' + a.source + '</td><td class="ss-loc">' + a.contact + '</td><td><span class="ss-cell-note ' + noteCls + '" title="' + a.notes.replace(/"/g, '&quot;') + '">' + a.notes + '</span></td><td class="ss-loc">' + a.nextStep + '</td><td class="ss-loc">' + a.salary + '</td><td class="ss-loc">' + a.location + '</td><td class="ss-loc">' + a.contactEmail + '</td></tr>';
-      }).join('');
+      if (mobile) {
+        document.getElementById('protoHead').innerHTML = '<th>Job Title</th><th>Status (free text)</th><th>Notes</th><th>Next Step</th>';
+        body.innerHTML = data.map(a => {
+          const isAlert = a.notes.length > 80;
+          const noteCls = isAlert ? 'ss-note-alert' : 'ss-note-dim';
+          return '<tr style="background:#0A0A0A;"><td style="color:#E8E8E8;font-weight:500;">' + a.title + '</td><td><span class="ss-st-text">' + a.status + '</span></td><td><span class="ss-cell-note ' + noteCls + '" title="' + a.notes.replace(/"/g, '&quot;') + '">' + a.notes + '</span></td><td class="ss-loc">' + a.nextStep + '</td></tr>';
+        }).join('');
+      } else {
+        document.getElementById('protoHead').innerHTML = '<th>Job Title</th><th>Company</th><th>Status (free text)</th><th>Date Applied</th><th>Source</th><th>Contact</th><th>Notes</th><th>Next Step</th><th>Salary Range</th><th>Location</th><th>Contact Email</th>';
+        body.innerHTML = data.map(a => {
+          const isAlert = a.notes.length > 80;
+          const noteCls = isAlert ? 'ss-note-alert' : 'ss-note-dim';
+          return '<tr style="background:#0A0A0A;"><td style="color:#E8E8E8;font-weight:500;">' + a.title + '</td><td style="color:#BDBDBD;">' + a.company + '</td><td><span class="ss-st-text">' + a.status + '</span></td><td style="color:#BDBDBD;">' + (a.dateApplied || '<span class="ss-stale">—</span>') + '</td><td class="ss-loc">' + a.source + '</td><td class="ss-loc">' + a.contact + '</td><td><span class="ss-cell-note ' + noteCls + '" title="' + a.notes.replace(/"/g, '&quot;') + '">' + a.notes + '</span></td><td class="ss-loc">' + a.nextStep + '</td><td class="ss-loc">' + a.salary + '</td><td class="ss-loc">' + a.location + '</td><td class="ss-loc">' + a.contactEmail + '</td></tr>';
+        }).join('');
+      }
       document.getElementById('protoCounts').innerHTML = '<b>' + data.length + ' rows</b> · <span style="color:#FF4D3D;">No archive</span> · <span style="color:#6B6B6B;">Notes inline = clutter</span>';
       document.getElementById('protoHint').innerHTML = 'Spreadsheets looked like this. Free-text status drifts. Notes grow. Nothing surfaces. <button onclick="document.querySelector(\'[data-view=queue]\').click()" style="background:#FF4D3D;color:#fff;border:none;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;margin-left:8px;">See the Focus Queue &rarr;</button>';
     }
@@ -736,7 +780,8 @@
       btn.classList.add('active');
       currentView = btn.dataset.view;
       document.getElementById('protoAppbar').style.display = currentView === 'spreadsheet' ? 'none' : 'flex';
-      document.getElementById('spotlight').style.display = currentView === 'spreadsheet' ? 'none' : 'flex';
+      const mobile = matchMedia('(max-width:768px)').matches;
+      document.getElementById('spotlight').style.display = (!mobile && currentView === 'queue') ? 'flex' : 'none';
       if (currentView === 'spreadsheet') clearSpotlight();
       render();
     });
@@ -866,15 +911,26 @@
         const er = anchor.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
         if (er.top < wr.top) wrap.scrollTop -= (wr.top - er.top);
         else if (er.bottom > wr.bottom) wrap.scrollTop += (er.bottom - wr.bottom);
+        if (er.left < wr.left) wrap.scrollLeft -= (wr.left - er.left);
+        else if (er.right > wr.right) wrap.scrollLeft += (er.right - wr.right);
       }
       requestAnimationFrame(() => {
         const pr = panel.getBoundingClientRect();
-        const rects = targets.map(t => t.getBoundingClientRect());
+        const wr = wrap.getBoundingClientRect();
+        const pad = 10;
+        const rects = targets.map(t => {
+          const b = t.getBoundingClientRect();
+          const r = { left: b.left, right: b.right, top: b.top, bottom: b.bottom };
+          if (wrap.contains(t)) {
+            r.left = Math.max(r.left, wr.left + pad); r.right = Math.min(r.right, wr.right - pad);
+            r.top = Math.max(r.top, wr.top + pad); r.bottom = Math.min(r.bottom, wr.bottom - pad);
+          }
+          return { left: r.left, top: r.top, right: r.right, bottom: r.bottom };
+        });
         const top = Math.min(...rects.map(r => r.top)) - pr.top;
         const bottom = Math.max(...rects.map(r => r.bottom)) - pr.top;
         const left = Math.min(...rects.map(r => r.left)) - pr.left;
         const right = Math.max(...rects.map(r => r.right)) - pr.left;
-        const pad = 10;
         highlight.style.top = (top - pad) + 'px';
         highlight.style.left = (left - pad) + 'px';
         highlight.style.width = ((right - left) + pad * 2) + 'px';
@@ -886,7 +942,12 @@
         const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
         const barH = 56, m = 12;
         let px = left, py = top, arrow = 'tt-top';
-        if (step.pos === 'bottom') { py = bottom + m; arrow = 'tt-bottom'; if (py + th > pr.height - barH - 8) { py = top - th - m; arrow = 'tt-top'; } }
+        if (pr.width < 560) {
+          py = Math.max(8, bottom + m); arrow = 'tt-bottom';
+          if (py + th > pr.height - barH - 8) { py = top - th - m; arrow = 'tt-top'; }
+          px = Math.max(8, Math.min(left, pr.width - tw - 8));
+        }
+        else if (step.pos === 'bottom') { py = bottom + m; arrow = 'tt-bottom'; if (py + th > pr.height - barH - 8) { py = top - th - m; arrow = 'tt-top'; } }
         else if (step.pos === 'right') { px = right + m; arrow = 'tt-right'; if (px + tw > pr.width - 8) { px = left - tw - m; arrow = 'tt-left'; if (px < 8) { px = left; py = bottom + m; arrow = 'tt-bottom'; } } }
         else { py = top - th - m; arrow = 'tt-top'; if (py < 8) { py = bottom + m; arrow = 'tt-bottom'; } }
         px = Math.max(8, Math.min(px, pr.width - tw - 8));
