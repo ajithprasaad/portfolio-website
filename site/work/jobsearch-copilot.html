@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job Search Copilot · Ajith Iyer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0A0A0A', surface: '#141414', 'surface-2': '#1C1C1C',
+            line: '#262626', muted: '#9A9A9A', 'muted-2': '#6B6B6B',
+            accent: '#FF4D3D', 'accent-hover': '#E83C2C'
+          },
+          fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['Inter', 'sans-serif'] },
+          maxWidth: { container: '1200px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A0A0A; color: #9A9A9A; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+    ::selection { background: #FF4D3D; color: #fff; }
+    .container-x { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; }
+    @media (max-width: 640px) { .container-x { padding-inline: 1rem; } }
+
+    /* === HEADER === */
+    .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 56px; background: rgba(10,10,10,0.85); backdrop-filter: blur(8px); border-bottom: 1px solid #262626; display: flex; align-items: center; }
+    .site-header nav { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .site-header a.wordmark { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 1.125rem; letter-spacing: -0.02em; text-decoration: none; }
+    .site-header a.wordmark span { color: #FF4D3D; }
+    .site-header .header-links { display: flex; align-items: center; gap: 1rem; }
+    .site-header .header-links a { font-size: 0.875rem; color: #6B6B6B; text-decoration: none; transition: color 0.15s; }
+    .site-header .header-links a:hover { color: #fff; }
+    .site-header .header-links a.cta-btn { background: #FF4D3D; color: #fff; font-size: 0.875rem; font-weight: 500; padding: 0.375rem 0.75rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .site-header .cta-btn:hover { background: #E83C2C; }
+    @media (max-width: 640px) { .site-header .header-links a:not(.cta-btn) { display: none; } }
+
+    /* === HERO === */
+    .context-section { position: relative; z-index: 10; overflow: hidden; }
+    .context-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .context-bg::before { content: ''; position: absolute; inset: -15%; background: radial-gradient(ellipse at 50% -10%, #171717 0%, #0A0A0A 60%), radial-gradient(circle at 78% 30%, rgba(255,77,61,0.06) 0%, transparent 44%), radial-gradient(circle at 88% 78%, rgba(255,77,61,0.04) 0%, transparent 40%); animation: bgDrift 26s ease-in-out infinite alternate; }
+    @keyframes bgDrift { from { transform: scale(1) translate3d(0,0,0); } to { transform: scale(1.06) translate3d(0,-2%,0); } }
+    .context-bg .particle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.05); animation: floatUp linear infinite; }
+    @keyframes floatUp { from { transform: translateY(0); opacity: 0; } 12% { opacity: 0.6; } 88% { opacity: 0.6; } to { transform: translateY(-130px); opacity: 0; } }
+    .content-shell { max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; position: relative; z-index: 1; }
+    @media (max-width: 640px) { .content-shell { padding-inline: 1rem; } }
+    .context-inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: clamp(5rem, 10vw, 7rem) 0 clamp(2.5rem, 6vw, 4rem); }
+    @media (max-width: 640px) { .context-inner { padding: 3.5rem 0 1.5rem; } }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: #9A9A9A; text-decoration: none; transition: color 0.2s, gap 0.2s; margin-bottom: 1.75rem; }
+    .back-btn:hover { color: #fff; gap: 0.65rem; }
+    .back-btn i { font-size: 0.7rem; }
+    .context-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: #FF4D3D; font-weight: 500; text-shadow: 0 0 18px rgba(255,77,61,0.35); }
+    .context-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.02; letter-spacing: -0.02em; margin-top: 1rem; }
+    .context-title .period { color: #FF4D3D; text-shadow: 0 0 24px rgba(255,77,61,0.45); }
+    .context-subtitle { font-size: clamp(1.05rem, 2.2vw, 1.35rem); color: #C4C4C4; margin-top: 1.25rem; line-height: 1.6; max-width: 640px; }
+    .context-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    @media (max-width: 640px) { .context-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); } .context-subtitle { font-size: 0.95rem; margin-top: 0.875rem; line-height: 1.5; } .context-tags { margin-top: 1rem; gap: 0.375rem; } }
+    .context-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; background: rgba(20,20,20,0.5); transition: border-color 0.2s, color 0.2s; }
+    .context-tags span:hover { border-color: #FF4D3D; color: #fff; }
+    .impact-row { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem; }
+    .impact-stat { display: flex; flex-direction: column; }
+    .impact-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; }
+    .impact-cap { color: #9A9A9A; font-size: 0.85rem; margin-top: 0.375rem; }
+    @media (max-width: 640px) { .impact-row { gap: 1.5rem; margin-top: 1.5rem; } .impact-num { font-size: 1.75rem; } }
+    .context-blurb { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #1C1C1C; max-width: 680px; }
+    .context-blurb-label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; margin-bottom: 0.75rem; }
+    .context-blurb-label .n { color: #FF4D3D; }
+    .context-blurb p { font-size: 0.9rem; color: #6B6B6B; line-height: 1.7; }
+    @media (max-width: 640px) { .context-blurb { margin-top: 1.25rem; padding-top: 1rem; } .context-blurb p { font-size: 0.8rem; line-height: 1.6; } }
+    .context-inner > * { opacity: 0; transform: translateY(16px); animation: ctxUp 0.6s ease-out forwards; }
+    .context-eyebrow { animation-delay: 0.05s; } .context-title { animation-delay: 0.15s; } .context-subtitle { animation-delay: 0.28s; } .context-tags { animation-delay: 0.4s; } .context-blurb { animation-delay: 0.52s; }
+    @keyframes ctxUp { to { opacity: 1; transform: none; } }
+
+    /* === STANDALONE PROTOTYPE SECTION === */
+    .demo-section { position: relative; z-index: 20; max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; padding: 3rem 1.5rem 4rem; }
+    @media (max-width: 640px) { .demo-section { padding: 2rem 1rem 3rem; } }
+    .demo-shell { max-width: 1100px; margin: 0 auto; }
+    .demo-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .demo-head h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 1.5rem; }
+    .demo-head-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+    /* Toggle */
+    .toggle-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+    .toggle-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #6B6B6B; font-weight: 500; }
+    .toggle-group { display: flex; background: #141414; border: 1px solid #262626; border-radius: 10px; overflow: hidden; }
+    .toggle-btn { padding: 0.625rem 1.25rem; font-size: 13px; font-weight: 600; border: none; background: transparent; color: #6B6B6B; cursor: pointer; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
+    .toggle-btn.active { background: #FF4D3D; color: #fff; }
+    .toggle-btn:hover:not(.active) { color: #fff; background: rgba(255,77,61,0.08); }
+    .toggle-btn i { font-size: 0.8rem; }
+
+    .tour-btn { font-size: 13px; font-weight: 600; padding: 0.625rem 1.25rem; border-radius: 10px; border: 1px solid rgba(255,77,61,0.3); background: rgba(255,77,61,0.1); color: #FF4D3D; cursor: pointer; transition: all 0.15s; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
+    .tour-btn:hover { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
+
+    /* Demo body */
+    .demo-body { display: flex; gap: 0; background: #141414; border: 1px solid #262626; border-radius: 16px; overflow: hidden; }
+
+    /* Spotlight sidebar */
+    .spotlight { width: 220px; flex-shrink: 0; border-right: 1px solid #262626; background: #0F0F0F; display: flex; flex-direction: column; }
+    @media (max-width: 768px) { .spotlight { display: none; } }
+    .spotlight-head { padding: 1rem 1rem 0.75rem; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #6B6B6B; font-weight: 500; }
+    .spotlight-list { flex: 1; overflow-y: auto; padding: 0 0.5rem 0.5rem; }
+    .spot-card { padding: 0.625rem 0.75rem; border-radius: 10px; cursor: pointer; transition: all 0.15s; margin-bottom: 2px; border: 1px solid transparent; }
+    .spot-card:hover { background: rgba(255,77,61,0.05); }
+    .spot-card.active { background: rgba(255,77,61,0.08); border-color: rgba(255,77,61,0.2); }
+    .spot-card h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.82rem; color: #E8E8E8; }
+    .spot-card p { font-size: 0.75rem; color: #6B6B6B; margin-top: 0.125rem; line-height: 1.4; }
+    .spot-detail { padding: 0.75rem; border-top: 1px solid #262626; font-size: 0.78rem; color: #BDBDBD; line-height: 1.55; background: #0A0A0A; min-height: 60px; }
+    .spot-detail .spot-title { color: #FF4D3D; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.82rem; margin-bottom: 0.375rem; }
+
+    /* Demo panel */
+    .demo-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+    .proto-appbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; padding: 0.75rem 1rem; background: #0A0A0A; border-bottom: 1px solid #262626; }
+    .pill { font-size: 11px; padding: 4px 10px; border-radius: 9999px; border: 1px solid #262626; color: #9A9A9A; background: #141414; cursor: pointer; transition: all 0.15s; }
+    .pill.active { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
+    .pill:hover { border-color: #FF4D3D; color: #fff; }
+    .proto-search { flex: 1; min-width: 160px; background: #141414; border: 1px solid #262626; color: #fff; font-size: 12px; padding: 6px 10px; border-radius: 8px; outline: none; }
+    .proto-search:focus { border-color: #FF4D3D; }
+    .proto-search::placeholder { color: #6B6B6B; }
+    .proto-select { background: #141414; border: 1px solid #262626; color: #fff; font-size: 11px; padding: 6px 8px; border-radius: 8px; }
+    .proto-table-wrap { overflow: auto; flex: 1; background: #0A0A0A; }
+    .proto-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+    .proto-table th { text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6B6B6B; padding: 8px 10px; border-bottom: 1px solid #1C1C1C; background: #0A0A0A; position: sticky; top: 0; z-index: 1; }
+    .proto-table td { padding: 9px 10px; font-size: 12.5px; border-bottom: 1px solid #141414; }
+    .row-live { background: #0A0A0A; cursor: pointer; transition: background 0.12s; }
+    .row-live:hover { background: #141414; }
+    .row-live.selected { background: rgba(255,77,61,0.07); }
+    .row-dummy { background: #0F0F0F; color: #6B6B6B; }
+    .row-dummy td { color: #6B6B6B; }
+    .status-pill { font-size: 11px; padding: 3px 8px; border-radius: 9999px; border: 1px solid #262626; color: #E8E8E8; }
+    .st-saved { background: rgba(154,154,154,0.12); color: #C4C4C4; }
+    .st-applied { background: rgba(59,130,246,0.14); color: #93C5FD; border-color: rgba(59,130,246,0.22); }
+    .st-phone_screen { background: rgba(99,102,241,0.14); color: #A5B4FC; border-color: rgba(99,102,241,0.22); }
+    .st-interviewing { background: rgba(16,185,129,0.14); color: #6EE7B7; border-color: rgba(16,185,129,0.22); }
+    .st-offered { background: rgba(245,158,11,0.14); color: #FBBF24; border-color: rgba(245,158,11,0.26); }
+    .st-rejected { background: rgba(107,114,128,0.14); color: #9CA3AF; border-color: rgba(107,114,128,0.2); }
+    .st-withdrawn { background: rgba(75,85,99,0.18); color: #9CA3AF; }
+    .due-pill { font-size: 11px; padding: 2px 7px; border-radius: 9999px; }
+    .due-today { background: rgba(255,77,61,0.14); color: #FF8A80; border: 1px solid rgba(255,77,61,0.24); }
+    .due-upcoming { background: rgba(245,158,11,0.12); color: #FCD34D; border: 1px solid rgba(245,158,11,0.18); }
+    .due-overdue { background: rgba(239,68,68,0.14); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.22); }
+    .due-cold { background: #1C1C1C; color: #6B6B6B; border: 1px solid #262626; }
+    .prio { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; color: #FF4D3D; }
+    .prio.low { color: #6B6B6B; }
+    .proto-foot { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: #141414; border-top: 1px solid #262626; font-size: 11px; color: #6B6B6B; }
+    .proto-foot .counts { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+    .counts b { color: #E8E8E8; font-family: 'Space Grotesk', sans-serif; }
+    .proto-caption { font-size: 11px; color: #6B6B6B; text-align: center; padding: 0.625rem 1rem; }
+
+    /* Bulk bar */
+    #protoBulkBar { display: none; padding: 0.5rem 1rem; background: rgba(255,77,61,0.08); border-bottom: 1px solid #262626; font-size: 12px; color: #E8E8E8; align-items: center; justify-content: space-between; gap: 0.5rem; }
+
+    /* Spreadsheet view */
+    .ss-cell-note { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+    .ss-note-alert { color: #FF4D3D; font-size: 10px; }
+    .ss-note-dim { color: #6B6B6B; font-size: 10px; }
+    .ss-st-text { color: #BDBDBD; font-size: 11px; }
+    .ss-loc { color: #6B6B6B; font-size: 11px; }
+    .ss-stale { color: #6B6B6B; font-style: italic; }
+
+    /* Walkthrough overlay */
+    .walkthrough-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; pointer-events: none; border-radius: 16px; opacity: 0; transition: opacity 0.3s; }
+    .walkthrough-overlay.active { opacity: 1; pointer-events: auto; }
+    .walkthrough-highlight { position: absolute; z-index: 55; border: 2px solid rgba(255,77,61,0.6); border-radius: 8px; box-shadow: 0 0 0 4px rgba(255,77,61,0.12), 0 0 24px rgba(255,77,61,0.15); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); pointer-events: none; }
+    .walkthrough-highlight.active { pointer-events: auto; animation: hlPulse 2s ease-in-out infinite; }
+    @keyframes hlPulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(255,77,61,0.12), 0 0 24px rgba(255,77,61,0.15); } 50% { box-shadow: 0 0 0 6px rgba(255,77,61,0.08), 0 0 32px rgba(255,77,61,0.2); } }
+    .walkthrough-tooltip { position: absolute; z-index: 60; background: #1C1C1C; border: 1px solid #333; border-radius: 12px; padding: 1rem 1.125rem; max-width: 300px; box-shadow: 0 12px 40px rgba(0,0,0,0.6); }
+    .walkthrough-tooltip h4 { font-family: 'Space Grotesk', sans-serif; color: #fff; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.375rem; }
+    .walkthrough-tooltip p { color: #BDBDBD; font-size: 0.85rem; line-height: 1.6; }
+    .walkthrough-tooltip::before { content: ''; position: absolute; width: 10px; height: 10px; background: #1C1C1C; border: 1px solid #333; transform: rotate(45deg); }
+    .walkthrough-tooltip h4 .tt-step { display: inline-block; background: rgba(255,77,61,0.16); color: #FF4D3D; font-size: 9px; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 6px; margin-right: 8px; vertical-align: 2px; font-family: 'Space Grotesk', sans-serif; }
+    .walkthrough-tooltip.tt-bottom::before { top: -6px; left: 24px; border-right: none; border-bottom: none; }
+    .walkthrough-tooltip.tt-top::before { bottom: -6px; left: 24px; border-left: none; border-top: none; }
+    .walkthrough-tooltip.tt-left::before { right: -6px; top: 24px; border-left: none; border-bottom: none; }
+    .walkthrough-tooltip.tt-right::before { left: -6px; top: 24px; border-right: none; border-top: none; }
+    .walkthrough-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 56; background: #141414; border-top: 1px solid #262626; padding: 0.875rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; border-radius: 0 0 16px 16px; }
+    .walkthrough-bar .step-label { font-size: 13px; color: #BDBDBD; }
+    .walkthrough-bar .step-label strong { color: #fff; font-family: 'Space Grotesk', sans-serif; }
+    .walkthrough-bar .step-actions { display: flex; gap: 0.5rem; }
+    .walkthrough-bar .step-actions button { padding: 0.5rem 1rem; font-size: 12px; font-weight: 500; border-radius: 8px; border: 1px solid #262626; background: #1C1C1C; color: #fff; cursor: pointer; transition: all 0.15s; }
+    .walkthrough-bar .step-actions button:hover { border-color: #FF4D3D; }
+    .walkthrough-bar .step-actions button.walk-primary { background: #FF4D3D; border-color: #FF4D3D; }
+    .walkthrough-bar .step-actions button.walk-primary:hover { background: #E83C2C; }
+    @media (max-width: 768px) { .walkthrough-tooltip { max-width: 220px; } }
+
+    /* === CAROUSEL === */
+    .carousel-wrap { position: relative; z-index: 20; max-width: 1200px; margin-inline: auto; padding-inline: 1.5rem; padding-bottom: 4rem; }
+    @media (max-width: 640px) { .carousel-wrap { padding-inline: 1rem; } }
+    [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    [data-anim].in { opacity: 1; transform: none; }
+    .carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: 100%; height: 62vh; min-height: 460px; scrollbar-width: none; scroll-behavior: smooth; }
+    .carousel::-webkit-scrollbar { display: none; }
+    .carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; overflow-y: auto; scrollbar-width: none; }
+    .carousel-slide::-webkit-scrollbar { display: none; }
+    .slide-inner { min-height: 100%; display: flex; flex-direction: column; justify-content: safe center; max-width: 1000px; margin: 0; padding: 1.5rem 0 4.5rem; }
+    @media (max-width: 640px) { .slide-inner { padding: 1rem 0 4.5rem; } }
+    .slide-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
+    .slide-top .bx { color: #FF4D3D; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.05em; }
+    .slide-top .label { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6B6B6B; }
+    .slide-top .rule { flex: 1; height: 1px; background: #1C1C1C; }
+
+    /* Problem */
+    .slide-problem { border-left: 4px solid #FF4D3D; padding-left: 1.5rem; }
+    .slide-problem p { color: #E8E8E8; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.6; font-weight: 500; }
+    .slide-problem p + p { margin-top: 1.25rem; }
+
+    /* Discovery data points */
+    .discovery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 1.5rem; }
+    @media (max-width: 640px) { .discovery-grid { grid-template-columns: 1fr; } }
+    .discovery-card { background: #141414; border: 1px solid #262626; border-radius: 12px; padding: 1.25rem; }
+    .discovery-card .dc-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.625rem; }
+    .discovery-card .dc-icon { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,77,61,0.1); display: flex; align-items: center; justify-content: center; color: #FF4D3D; font-size: 0.75rem; flex-shrink: 0; }
+    .discovery-card .dc-source { font-size: 11px; color: #6B6B6B; text-transform: uppercase; letter-spacing: 0.08em; }
+    .discovery-card .dc-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: 1.75rem; line-height: 1; margin-bottom: 0.375rem; }
+    .discovery-card .dc-body { color: #BDBDBD; font-size: 0.88rem; line-height: 1.55; }
+    .discovery-card .dc-body em { color: #E8E8E8; font-style: normal; font-weight: 500; }
+    .discovery-card .dc-link { display: inline-block; margin-top: 0.5rem; font-size: 0.78rem; color: #9A9A9A; text-decoration: underline; text-underline-offset: 2px; }
+    .discovery-card .dc-link:hover { color: #fff; }
+    .discovery-footnote { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #1C1C1C; color: #6B6B6B; font-size: 0.85rem; line-height: 1.6; max-width: 680px; }
+
+    /* Approach steps */
+    .approach-steps { display: flex; flex-direction: column; gap: 1rem; }
+    @media (min-width: 768px) { .approach-steps { flex-direction: row; gap: 0; } }
+    .approach-step { display: flex; gap: 1rem; align-items: flex-start; }
+    @media (min-width: 768px) { .approach-step { flex: 1; } }
+    .approach-step .idx { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #FF4D3D; font-size: 0.85rem; flex-shrink: 0; margin-top: 0.15rem; }
+    .approach-step h4 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; }
+    .approach-step p { color: #9A9A9A; font-size: 0.9rem; line-height: 1.6; margin-top: 0.375rem; }
+    @media (min-width: 768px) { .approach-step + .approach-step { border-left: 1px solid #1C1C1C; padding-left: 1.5rem; margin-left: 1.5rem; } }
+
+    /* Reflections */
+    .reflect-body { max-width: 620px; }
+    .reflect-body p { color: #BDBDBD; font-size: 1rem; line-height: 1.7; }
+    .reflect-body p + p { margin-top: 1.25rem; }
+    .reflect-stack-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #6B6B6B; margin: 1.75rem 0 0.75rem; }
+    .reflect-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .reflect-tags span { border: 1px solid #262626; border-radius: 9999px; padding: 0.375rem 0.875rem; font-size: 0.8rem; color: #9A9A9A; }
+
+    /* === NAV === */
+    .slide-nav { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 0.625rem; background: rgba(10,10,10,0.85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid #262626; border-radius: 9999px; padding: 0.5rem 1rem; transition: opacity 0.4s ease; }
+    .slide-nav.nav-hidden { opacity: 0; pointer-events: none; }
+    .slide-nav button { border: none; cursor: pointer; font-size: 12px; }
+    .nav-arrow { width: 28px; height: 28px; border-radius: 50%; background: #141414; border: 1px solid #262626; color: #fff; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; }
+    .nav-arrow:hover { border-color: #FF4D3D; color: #FF4D3D; }
+    .nav-arrow:disabled { opacity: 0.25; cursor: default; }
+    .nav-counter { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: #6B6B6B; min-width: 30px; text-align: center; }
+    .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: #262626; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; padding: 0; }
+    .nav-dot.active { background: #FF4D3D; transform: scale(1.3); }
+
+    /* === DRAWER === */
+    .drawer { position: fixed; inset: 0; z-index: 80; display: none; }
+    .drawer.open { display: block; }
+    .drawer-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); }
+    .drawer-panel { position: absolute; top: 0; right: 0; width: 360px; max-width: 88vw; height: 100%; background: #141414; border-left: 1px solid #262626; padding: 1.25rem; overflow: auto; }
+    @media (max-width: 640px) { .drawer-panel { width: 100%; max-width: 100vw; } }
+    .drawer-panel h4 { font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 1rem; }
+    .drawer-panel label { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #6B6B6B; margin-top: 1rem; margin-bottom: 0.375rem; }
+    .drawer-panel select, .drawer-panel input, .drawer-panel textarea { width: 100%; background: #0A0A0A; border: 1px solid #262626; color: #fff; font-size: 13px; padding: 8px 10px; border-radius: 8px; outline: none; }
+    .drawer-panel select:focus, .drawer-panel input:focus, .drawer-panel textarea:focus { border-color: #FF4D3D; }
+    .drawer-actions { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+    .btn { font-size: 13px; padding: 8px 14px; border-radius: 8px; border: 1px solid #262626; cursor: pointer; }
+    .btn-primary { background: #FF4D3D; color: #fff; border-color: #FF4D3D; }
+    .btn-ghost { background: #1C1C1C; color: #fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .context-bg::before, .context-bg .particle { animation: none !important; }
+      .context-inner > * { opacity: 1 !important; transform: none !important; animation: none !important; }
+      [data-anim] { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .walkthrough-highlight, .walkthrough-overlay, .walkthrough-tooltip { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <nav class="container-x">
+      <a href="../index.html" class="wordmark">Ajith Iyer<span>.</span></a>
+      <div class="header-links">
+        <a href="../index.html#work">Work</a>
+        <a href="../index.html#contact" class="cta-btn">Get in touch</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="context-section" id="context">
+    <div class="context-bg">
+      <span class="particle" style="width:5px;height:5px;left:12%;top:78%;animation-duration:19s;"></span>
+      <span class="particle" style="width:7px;height:7px;left:68%;top:82%;animation-duration:23s;animation-delay:3s;"></span>
+      <span class="particle" style="width:4px;height:4px;left:45%;top:90%;animation-duration:17s;animation-delay:6s;"></span>
+    </div>
+    <div class="content-shell">
+      <div class="context-inner">
+        <a class="back-btn" href="../index.html#work"><i class="fa-solid fa-arrow-left"></i> Back to work</a>
+        <p class="context-eyebrow">proj_03 · Customer Discovery · Product Design</p>
+        <h1 class="context-title">Job Search<br />Copilot<span class="period">.</span></h1>
+        <p class="context-subtitle">My tracker grew until it tracked everything and surfaced nothing. This is the focus queue I built to replace it.</p>
+        <div class="context-tags">
+          <span>Customer Discovery</span><span>Interaction Design</span><span>Information Architecture</span><span>Product Scoping</span><span>FastAPI · SQLite · Vanilla JS</span>
+        </div>
+        <div class="impact-row">
+          <div class="impact-stat"><span class="impact-num">650+</span><span class="impact-cap">rows to 6</span></div>
+          <div class="impact-stat"><span class="impact-num">3</span><span class="impact-cap">manual steps to 1</span></div>
+          <div class="impact-stat"><span class="impact-num">no</span><span class="impact-cap">archive to soft-delete</span></div>
+          <div class="impact-stat"><span class="impact-num">5s</span><span class="impact-cap">to find what is due today</span></div>
+        </div>
+        <div class="context-blurb">
+          <p class="context-blurb-label"><span class="n">00</span> / scope</p>
+          <p>This began with my own job search. The spreadsheet I kept stopped helping and started demanding its own maintenance. Status drifted as free text, nothing ever archived, follow-ups lost in the noise. I rebuilt it as a focus queue: seven statuses, priority computed from the data, a soft archive that keeps the list short. Toggle below to compare before and after.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STANDALONE PROTOTYPE -->
+  <section class="demo-section" id="demo">
+    <div class="demo-shell">
+      <div class="demo-head">
+        <h2>The tracker</h2>
+        <div class="demo-head-actions">
+          <div class="toggle-row">
+            <span class="toggle-label">View</span>
+            <div class="toggle-group">
+              <button class="toggle-btn active" data-view="spreadsheet"><i class="fa-solid fa-table"></i> Spreadsheet</button>
+              <button class="toggle-btn" data-view="queue"><i class="fa-solid fa-table-list"></i> Focus Queue</button>
+            </div>
+          </div>
+          <button class="tour-btn" id="startTour"><i class="fa-solid fa-wand-magic-sparkles"></i> Tour the demo</button>
+        </div>
+      </div>
+
+      <div class="demo-body" id="demoBody">
+        <!-- Spotlight sidebar -->
+        <aside class="spotlight" id="spotlight" style="display:none;">
+          <div class="spotlight-head">Design decisions</div>
+          <div class="spotlight-list" id="spotList"></div>
+          <div class="spot-detail" id="spotDetail">
+            <div class="spot-title">Click a feature</div>
+            <p>Explore the design decisions behind each part of the queue.</p>
+          </div>
+        </aside>
+
+        <!-- Demo panel -->
+        <div class="demo-panel" id="demoPanel">
+          <div class="proto-appbar" id="protoAppbar">
+            <button class="pill active" data-pill="all">All</button>
+            <button class="pill" data-pill="saved">Saved</button>
+            <button class="pill" data-pill="applied">Applied</button>
+            <button class="pill" data-pill="phone_screen">Phone Screen</button>
+            <button class="pill" data-pill="interviewing">Interview</button>
+            <button class="pill" data-pill="offered">Offer</button>
+            <button class="pill" data-pill="rejected">Rejected</button>
+            <button class="pill" data-pill="withdrawn">Withdrawn</button>
+            <input id="protoSearch" class="proto-search" placeholder="Search company or title..." />
+            <select id="protoSort" class="proto-select">
+              <option value="next_action">Sort: Next Action</option>
+              <option value="priority">Sort: Priority</option>
+              <option value="date_applied">Sort: Date Applied</option>
+              <option value="company">Sort: Company</option>
+              <option value="status">Sort: Status</option>
+            </select>
+          </div>
+          <div id="protoBulkBar">
+            <span><span id="bulkCount">0</span> selected</span>
+            <span style="display:flex; gap:0.5rem;">
+              <button id="bulkArchiveBtn" class="btn btn-primary" style="padding:4px 10px; font-size:12px;"><i class="fa-solid fa-box-archive"></i> Archive Selected</button>
+              <button id="bulkClearBtn" class="btn btn-ghost" style="padding:4px 10px; font-size:12px;">Clear</button>
+            </span>
+          </div>
+          <div class="proto-table-wrap">
+            <table class="proto-table">
+              <thead><tr id="protoHead"></tr></thead>
+              <tbody id="protoBody"></tbody>
+            </table>
+          </div>
+          <div class="proto-foot">
+            <span class="counts" id="protoCounts"></span>
+            <span id="protoHint" style="color:#6B6B6B;">First 6 rows clickable · rest are sample expired</span>
+          </div>
+          <p class="proto-caption">Prototype simulation. First 6 rows interactive; the rest are expired samples for cold-trail archiving.</p>
+
+          <!-- Walkthrough -->
+          <div class="walkthrough-overlay" id="walkOverlay"></div>
+          <div class="walkthrough-highlight" id="walkHighlight"></div>
+          <div class="walkthrough-tooltip" id="walkTooltip" style="display:none;"></div>
+          <div class="walkthrough-bar" id="walkBar" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NARRATIVE CAROUSEL -->
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+
+      <!-- 01: DISCOVERY -->
+      <div class="carousel-slide" data-i="0">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">01</span><span class="label">Customer discovery</span><span class="rule"></span></div>
+          <p data-anim style="color:#E8E8E8;font-size:clamp(1.05rem,1.8vw,1.25rem);line-height:1.6;font-weight:500;max-width:700px;">The pattern showed up everywhere: job seekers hit a wall around 20 applications, build spreadsheet hacks, then abandon them. Reddit threads, productivity tool analyses, and job-search community discussions all point to the same breakdown.</p>
+          <div class="discovery-grid">
+            <div class="discovery-card" data-anim>
+              <div class="dc-head"><div class="dc-icon"><i class="fa-solid fa-users"></i></div><span class="dc-source">r/jobsearchhacks</span></div>
+              <div class="dc-num">20+</div>
+              <div class="dc-body">Applications is the trigger point. Seekers build custom tracking systems (LAMP, SHADE, multi-tab setups) after 20+ applications, then abandon them when complexity grows.</div>
+              <a class="dc-link" href="https://www.reddit.com/r/jobsearchhacks/comments/1e9paqj/" target="_blank">r/jobsearchhacks thread</a>
+            </div>
+            <div class="discovery-card" data-anim>
+              <div class="dc-head"><div class="dc-icon"><i class="fa-solid fa-chart-simple"></i></div><span class="dc-source">CompressExcel synthesis</span></div>
+              <div class="dc-num">8</div>
+              <div class="dc-body">Core columns emerge across Reddit threads: company, role, date, status, source, contact, next action, follow-up</div>
+              <a class="dc-link" href="https://compressexcel.com/blog/job-application-tracker-google-sheets" target="_blank">CompressExcel 2026</a>
+            </div>
+            <div class="discovery-card" data-anim>
+              <div class="dc-head"><div class="dc-icon"><i class="fa-solid fa-ban"></i></div><span class="dc-source">ClickUp / Jobscan</span></div>
+              <div class="dc-num">Refresh Updates</div>
+              <div class="dc-body">Spreadsheets have no archive. Rows pile up forever. "Excel not built for follow-ups" and "Can you see what's overdue?" are the two questions sheets fail to answer.</div>
+              <a class="dc-link" href="https://clickup.com/blog/job-application-tracker-excel/" target="_blank">ClickUp 2025</a>
+            </div>
+            <div class="discovery-card" data-anim>
+              <div class="dc-head"><div class="dc-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><span class="dc-source">r/jobsearch</span></div>
+              <div class="dc-num">∞</div>
+              <div class="dc-body">Sheets grow unbounded. Seekers patch with charts and reminders, then hit the same wall: the tracker becomes the work.</div>
+              <a class="dc-link" href="https://www.reddit.com/r/jobsearch/comments/1oo9v0t/" target="_blank">r/jobsearch thread</a>
+            </div>
+          </div>
+          <p class="discovery-footnote" data-anim>I found a consistent signal across sources: capturing without classification and prioritization destroys focus</p>
+        </div>
+      </div>
+
+      <!-- 02: PROBLEM -->
+      <div class="carousel-slide" data-i="1">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">02</span><span class="label">Problem</span><span class="rule"></span></div>
+          <div class="slide-problem">
+            <p data-anim>The list got so long it became THE JOB.</p>
+            <p data-anim style="color:#BDBDBD; font-size: 1rem; font-weight:400; margin-top:1rem;">Follow-ups hid. Warm and cold trails blurred. Status and filters fought the seeker more than they helped.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03: DESIGN DECISIONS -->
+      <div class="carousel-slide" data-i="2">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">03</span><span class="label">Design decisions</span><span class="rule"></span></div>
+          <div class="approach-steps">
+            <div class="approach-step" data-anim><span class="idx">01</span><div><h4>7-state pipeline</h4><p>Status started as free text. It drifted. A closed set of 7 (Saved, Applied, Phone Screen, Interview, Offer, Reject, Withdrawn) covers nearly all applications. Each state maps to a concrete next action, not just a label.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">02</span><div><h4>Priority as derived rank</h4><p>Computed from funnel depth, due proximity, and recency. Not manually tagged. Warm stages surface; cold trails sink.</p></div></div>
+            <div class="approach-step" data-anim><span class="idx">03</span><div><h4>Notes layered into a drawer</h4><p>Inline notes created clutter. A drawer keeps the table scannable. Detail on demand with one extra click, removes visual noise.</p></div></div>
+          </div>
+          <p data-anim style="color:#9A9A9A;margin-top:1.5rem;max-width:620px;line-height:1.65;font-size:0.92rem;">The queue stays deliberately minimal so it never competes with the search.</p>
+        </div>
+      </div>
+
+      <!-- 04: NEXT -->
+      <div class="carousel-slide" data-i="3">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">04</span><span class="label">What I would test next</span><span class="rule"></span></div>
+          <div class="reflect-body">
+            <p data-anim>Next: Let a fourteen-day cold window auto-prune the queue.
+              Also, a calendar reminder for pending tasks would be very useful.</p>
+           <p data-anim>Validation comes down to adoption. I find myself using the spreadsheet less and less, and the tool really helps bring more focus into my job search.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05: STACK -->
+      <div class="carousel-slide" data-i="4">
+        <div class="slide-inner">
+          <div class="slide-top" data-anim><span class="bx">05</span><span class="label">Stack</span><span class="rule"></span></div>
+          <div class="reflect-body">
+            <p data-anim>The hardest cut was scope. Keeping it to a single surface forced every feature to earn its place.</p>
+          </div>
+          <p class="reflect-stack-label" data-anim>stack · the tracker</p>
+          <div class="reflect-tags" data-anim>
+            <span>FastAPI</span><span>SQLite</span><span>Vanilla JS</span><span>Tailwind CDN</span><span>Soft-Archive</span><span>Drawer Layering</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NAV -->
+    <nav class="slide-nav" aria-label="Slide navigation">
+      <button class="nav-arrow" id="prevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+      <span class="nav-counter" id="counter">1 / 5</span>
+      <div id="dots" style="display:flex;gap:6px;"></div>
+      <button class="nav-arrow" id="nextBtn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    </nav>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #1C1C1C; padding:2.5rem 1.5rem; text-align:center; font-size:12px; color:#6B6B6B;">
+    <div class="container-x" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+      <span>&copy; 2026 Ajith Iyer</span>
+      <div style="display:flex; gap:1.5rem;">
+        <a href="https://www.linkedin.com/in/ajithiyer" target="_blank" style="color:#6B6B6B; text-decoration:none; transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6B6B6B'">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DRAWER -->
+  <div id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <div class="drawer-panel">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <h4>Edit Application</h4>
+        <button id="drawerClose" style="background:none;border:none;color:#6B6B6B;font-size:18px;cursor:pointer;">&times;</button>
+      </div>
+      <p style="font-size:11px; color:#6B6B6B; margin-top:0.25rem;">Notes are layered here, not in the table.</p>
+      <input type="hidden" id="drawerId" />
+      <label>Job Title</label>
+      <input id="drawerTitle" placeholder="Job title" />
+      <label>Company</label>
+      <input id="drawerCompany" placeholder="Company" />
+      <label>Status, 7-state pipeline</label>
+      <select id="drawerStatus">
+        <option value="saved">Saved</option>
+        <option value="applied">Applied</option>
+        <option value="phone_screen">Phone Screen</option>
+        <option value="interviewing">Interview</option>
+        <option value="offered">Offer</option>
+        <option value="rejected">Rejected</option>
+        <option value="withdrawn">Withdrawn</option>
+      </select>
+      <label>Next Action, due date</label>
+      <input id="drawerNextAction" type="date" />
+      <label>Notes</label>
+      <textarea id="drawerNotes" rows="4" placeholder="Follow-up context, contact, what was said..."></textarea>
+      <div class="drawer-actions">
+        <button id="drawerCancel" class="btn btn-ghost" style="flex:1;">Cancel</button>
+        <button id="drawerSave" class="btn btn-primary" style="flex:1;">Save</button>
+      </div>
+      <p style="font-size:11px; color:#6B6B6B; margin-top:0.75rem;">Sample data. Saves are in-memory only and reset on reload.</p>
+    </div>
+  </div>
+
+  <script>
+    /* ===== CAROUSEL ===== */
+    const carousel = document.getElementById('carousel');
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    let cur = 0;
+
+    const dotsWrap = document.getElementById('dots');
+    for (let i = 0; i < total; i++) {
+      const b = document.createElement('button');
+      b.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Slide ' + (i + 1));
+      b.onclick = () => go(i);
+      dotsWrap.appendChild(b);
+    }
+    const dots = dotsWrap.querySelectorAll('.nav-dot');
+    const counter = document.getElementById('counter');
+
+    function go(i) { if (i >= 0 && i < total) slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start' }); }
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          cur = parseInt(e.target.dataset.i, 10);
+          dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+          counter.textContent = (cur + 1) + ' / ' + total;
+          document.getElementById('prevBtn').disabled = cur === 0;
+          document.getElementById('nextBtn').disabled = cur === total - 1;
+          if (!e.target.dataset.animFired) {
+            e.target.dataset.animFired = '1';
+            e.target.querySelectorAll('[data-anim]').forEach((el, j) => {
+              setTimeout(() => el.classList.add('in'), reduced ? 0 : j * 90);
+            });
+          }
+        }
+      });
+    }, { root: carousel, threshold: 0.55 });
+    slides.forEach(s => obs.observe(s));
+
+    document.getElementById('prevBtn').onclick = () => { if (cur > 0) go(cur - 1); };
+    document.getElementById('nextBtn').onclick = () => { if (cur < total - 1) go(cur + 1); };
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(cur + 1);
+      if (e.key === 'ArrowLeft') go(cur - 1);
+      if (e.key === 'Escape') { closeDrawer(); endTour(); }
+    });
+
+    const slideNavEl = document.querySelector('.slide-nav');
+    new IntersectionObserver(entries => {
+      entries.forEach(e => slideNavEl.classList.toggle('nav-hidden', !e.isIntersecting));
+    }, { threshold: 0.15 }).observe(carousel);
+
+    /* ===== DATA ===== */
+    const todayISO = () => new Date().toISOString().slice(0,10);
+    const addDays = n => { const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+
+    let apps = [
+      { id:1, title:"Senior PM, AI Platform", company:"Palo Alto Networks", status:"interviewing", nextAction:addDays(1), dateApplied:"2026-08-12", salary:"$135-165K", location:"Santa Clara, CA", source:"Referral", notes:"Hiring manager intro call done. Follow up re: AI gateway pilot. Send portfolio by Fri.", archived:false, dummy:false },
+      { id:2, title:"Product Manager, Growth", company:"Uber", status:"phone_screen", nextAction:todayISO(), dateApplied:"2026-08-10", salary:"$140-170K", location:"San Francisco, CA", source:"LinkedIn", notes:"Recruiter reached out. Share marketplace growth teardown. Phone screen done 8/15.", archived:false, dummy:false },
+      { id:3, title:"Senior PM, Trust & Safety", company:"Spotify", status:"applied", nextAction:addDays(3), dateApplied:"2026-08-14", salary:"$125-150K", location:"New York, NY", source:"Greenhouse", notes:"Applied via Greenhouse. No contact yet. Posting still active. Ping Tue.", archived:false, dummy:false },
+      { id:4, title:"Product Manager, Recommendations", company:"Netflix", status:"applied", nextAction:addDays(2), dateApplied:"2026-08-13", salary:"$160-190K", location:"Los Gatos, CA", source:"Company site", notes:"Cold trail warming. Sent follow-up 8/16 with relevant article. Second touch.", archived:false, dummy:false },
+      { id:5, title:"Senior PM, Commerce", company:"Stripe", status:"saved", nextAction:addDays(5), dateApplied:"", salary:"$160-190K", location:"Remote (US)", source:"AngelList", notes:"Interesting payments infra role. Save for later. Research angle before applying.", archived:false, dummy:false },
+      { id:6, title:"Product Manager, Marketplace", company:"DoorDash", status:"phone_screen", nextAction:todayISO(), dateApplied:"2026-08-09", salary:"$130-160K", location:"San Francisco, CA", source:"Company site", notes:"Recruiter email 8/12. Phone screen done 8/15. Shared growth teardown doc. Awaiting HM review.", archived:false, dummy:false },
+      { id:7, title:"Senior PM, Data Platform", company:"LinkedIn", status:"applied", nextAction:"2026-07-10", dateApplied:"2026-07-01", salary:"$140-170K", location:"Sunnyvale, CA", source:"Company site", notes:"Applied through portal. No response. Followed up 7/8 and 7/15. Nothing.", archived:false, dummy:true, expiredReason:"No response, lead gone cold" },
+      { id:8, title:"Product Manager, Host Experience", company:"Airbnb", status:"applied", nextAction:"2026-07-15", dateApplied:"2026-07-03", salary:"$135-165K", location:"Remote (US)", source:"Referral", notes:"Applied. Posting seems to have been taken down. No communication.", archived:false, dummy:true, expiredReason:"Posting expired" },
+      { id:9, title:"Senior PM, Cloud Security", company:"CrowdStrike", status:"phone_screen", nextAction:"2026-07-18", dateApplied:"2026-07-05", salary:"$130-160K", location:"Austin, TX", source:"LinkedIn", notes:"Screen done 7/12. Recruiter went silent. Said she'd circle back. Hasn't responded to 2 follow-ups.", archived:false, dummy:true, expiredReason:"Recruiter stopped responding" },
+      { id:10, title:"Product Manager, AI Infrastructure", company:"Nvidia", status:"saved", nextAction:"2026-07-12", dateApplied:"", salary:"$145-175K", location:"Santa Clara, CA", source:"LinkedIn", notes:"Interesting infra role. Saved to look at later. Never got around to applying.", archived:false, dummy:true, expiredReason:"No follow-up, stale" },
+      { id:11, title:"Senior PM, Collaboration", company:"Atlassian", status:"rejected", nextAction:"", dateApplied:"2026-07-02", salary:"$130-160K", location:"Remote (US)", source:"Company site", notes:"Final round went well. Went with someone who had more platform experience. Stay in touch.", archived:false, dummy:true, expiredReason:"Rejected, archived" },
+      { id:12, title:"Product Manager, Ads & Monetization", company:"Pinterest", status:"withdrawn", nextAction:"", dateApplied:"2026-07-08", salary:"$135-165K", location:"San Francisco, CA", source:"LinkedIn", notes:"Withdrew after getting DoorDash offer.", archived:false, dummy:true, expiredReason:"Withdrawn" },
+    ];
+
+    /* ===== SPREADSHEET DATA (before) ===== */
+    const ssApps = [
+      { id:1, title:"Senior PM, AI Platform", company:"Palo Alto Networks", status:"HM call done 8/12, follow up re:pilot", dateApplied:"2026-08-12", source:"Referral", contact:"Sarah M. (HM)", notes:"Hiring manager intro call done. Follow up re: AI gateway pilot. Send portfolio by Fri.", nextStep:"Send portfolio", salary:"$135-165K", location:"Santa Clara, CA", contactEmail:"sarah@paloaltonetworks..." },
+      { id:2, title:"Product Manager, Growth", company:"Uber", status:"Recruiter email, phone screen done 8/15", dateApplied:"2026-08-10", source:"LinkedIn", contact:"Jason R.", notes:"Recruiter reached out. Share marketplace growth teardown. Phone screen done 8/15.", nextStep:"Follow up Wed", salary:"$140-170K", location:"San Francisco, CA", contactEmail:"jason.r@uber..." },
+      { id:3, title:"Senior PM, Trust & Safety", company:"Spotify", status:"Applied via Greenhouse 8/14", dateApplied:"2026-08-14", source:"Greenhouse", contact:"\u2014", notes:"Applied via Greenhouse. No contact yet. Posting still active. Ping Tue.", nextStep:"Ping contact Tue", salary:"$125-150K", location:"New York, NY", contactEmail:"\u2014" },
+      { id:4, title:"Product Manager, Recommendations", company:"Netflix", status:"Cold. Sent follow-up 8/16", dateApplied:"2026-08-13", source:"Company site", contact:"\u2014", notes:"Cold trail warming. Sent follow-up 8/16 with relevant article. Second touch.", nextStep:"Wait 1 week", salary:"$160-190K", location:"Los Gatos, CA", contactEmail:"\u2014" },
+      { id:5, title:"Senior PM, Commerce", company:"Stripe", status:"Saved. Need to research more before applying", dateApplied:"", source:"AngelList", contact:"\u2014", notes:"Interesting payments infra role. Save for later. Research angle before applying.", nextStep:"Research first", salary:"$160-190K", location:"Remote (US)", contactEmail:"\u2014" },
+      { id:6, title:"Product Manager, Marketplace", company:"DoorDash", status:"HM replied 8/14, scheduling on-site!!!", dateApplied:"2026-08-09", source:"Company site", contact:"Priya V. (HM)", notes:"Recruiter email 8/12. Phone screen done 8/15. Shared growth teardown doc. Awaiting HM review.", nextStep:"Prepare case study", salary:"$130-160K", location:"San Francisco, CA", contactEmail:"priya@doordash..." },
+      { id:7, title:"Senior PM, Data Platform", company:"LinkedIn", status:"No response", dateApplied:"2026-07-01", source:"Company site", contact:"\u2014", notes:"Applied through portal. No response. Followed up 7/8 and 7/15. Nothing.", nextStep:"Give up?", salary:"$140-170K", location:"Sunnyvale, CA", contactEmail:"\u2014" },
+      { id:8, title:"Product Manager, Host Experience", company:"Airbnb", status:"Posting closed?", dateApplied:"2026-07-03", source:"Referral", contact:"James K.", notes:"Applied. Posting seems to have been taken down. No communication.", nextStep:"???", salary:"$135-165K", location:"Remote (US)", contactEmail:"james.k@airbnb..." },
+      { id:9, title:"Senior PM, Cloud Security", company:"CrowdStrike", status:"Phone screen done 7/12, recruiter went silent", dateApplied:"2026-07-05", source:"LinkedIn", contact:"Lisa (recruiter)", notes:"Screen done 7/12. Recruiter went silent. Said she'd circle back. Hasn't responded to 2 follow-ups.", nextStep:"Follow up again?", salary:"$130-160K", location:"Austin, TX", contactEmail:"lisa@crowdstrike..." },
+      { id:10, title:"Product Manager, AI Infrastructure", company:"Nvidia", status:"Saved, looks interesting", dateApplied:"", source:"LinkedIn", contact:"\u2014", notes:"Interesting infra role. Saved to look at later. Never got around to applying.", nextStep:"???", salary:"$145-175K", location:"Santa Clara, CA", contactEmail:"\u2014" },
+      { id:11, title:"Senior PM, Collaboration", company:"Atlassian", status:"Rejected after final round (7/28)", dateApplied:"2026-07-02", source:"Company site", contact:"Mark T.", notes:"Final round went well. Went with someone who had more platform experience. Stay in touch.", nextStep:"Stay in touch", salary:"$130-160K", location:"Remote (US)", contactEmail:"mark@atlassian..." },
+      { id:12, title:"Product Manager, Ads & Monetization", company:"Pinterest", status:"Withdrawn, accepted another offer", dateApplied:"2026-07-08", source:"LinkedIn", contact:"\u2014", notes:"Withdrew after getting DoorDash offer.", nextStep:"N/A", salary:"$135-165K", location:"San Francisco, CA", contactEmail:"\u2014" },
+    ];
+
+    let currentView = 'spreadsheet';
+    let filterStatus = 'all';
+    let searchQ = '';
+    let sortKey = 'next_action';
+    let selected = new Set();
+
+    const statusLabel = { saved:"Saved", applied:"Applied", phone_screen:"Phone Screen", interviewing:"Interview", offered:"Offer", rejected:"Rejected", withdrawn:"Withdrawn" };
+    const statusCls = { saved:"st-saved", applied:"st-applied", phone_screen:"st-phone_screen", interviewing:"st-interviewing", offered:"st-offered", rejected:"st-rejected", withdrawn:"st-withdrawn" };
+
+    function prioFor(a) {
+      if (a.dummy || a.archived) return 0;
+      const depth = { saved:1, applied:2, phone_screen:3, interviewing:4, offered:5 }[a.status] || 1;
+      let dueScore = 1;
+      if (a.nextAction) {
+        const diff = Math.ceil((new Date(a.nextAction) - new Date(todayISO())) / 86400000);
+        if (diff < 0) dueScore = 5; else if (diff === 0) dueScore = 4; else if (diff <= 3) dueScore = 3;
+      }
+      return depth * 2 + dueScore;
+    }
+
+    function duePill(a) {
+      if (a.dummy) return '<span class="due-pill due-cold"><i class="fa-solid fa-snowflake"></i> Expired · cold</span>';
+      if (!a.nextAction) return '<span class="due-pill due-cold">—</span>';
+      const diff = Math.ceil((new Date(a.nextAction) - new Date(todayISO())) / 86400000);
+      if (diff < 0) return '<span class="due-pill due-overdue">Overdue</span>';
+      if (diff === 0) return '<span class="due-pill due-today">Today</span>';
+      if (diff <= 3) return '<span class="due-pill due-upcoming">In ' + diff + 'd</span>';
+      return '<span class="due-pill due-cold">' + a.nextAction + '</span>';
+    }
+
+    /* ===== RENDER ===== */
+    function render() {
+      if (currentView === 'spreadsheet') { renderSpreadsheet(); return; }
+      const body = document.getElementById('protoBody');
+      document.getElementById('protoHead').innerHTML = '<th style="width:28px;"><input type="checkbox" id="selectAll" /></th><th>Job / Link</th><th>Status</th><th>Next Action</th><th>Priority</th>';
+      document.getElementById('protoBulkBar').style.display = 'none';
+      let out = apps.filter(a => !a.archived);
+      if (filterStatus !== 'all') out = out.filter(a => a.status === filterStatus);
+      if (searchQ) { const q = searchQ.toLowerCase(); out = out.filter(a => (a.title + ' ' + a.company).toLowerCase().includes(q)); }
+      out.sort((a, b) => {
+        if (sortKey === 'next_action') return (a.nextAction || '9999').localeCompare(b.nextAction || '9999');
+        if (sortKey === 'priority') return prioFor(b) - prioFor(a);
+        if (sortKey === 'date_applied') return (b.dateApplied || '').localeCompare(a.dateApplied || '');
+        if (sortKey === 'company') return a.company.localeCompare(b.company);
+        return a.status.localeCompare(b.status);
+      });
+      body.innerHTML = out.map(a => {
+        const dummy = a.dummy, prio = prioFor(a);
+        const prioCls = prio >= 8 ? '' : prio >= 5 ? '' : 'low';
+        const title = dummy ? 'Sample. Lead gone cold (not clickable)' : 'Click to edit. Status + Next Action (notes in drawer)';
+        const cls = dummy ? 'row-dummy' : 'row-live' + (selected.has(a.id) ? ' selected' : '');
+        const chk = dummy ? '<input type="checkbox" disabled style="opacity:0.25;" />' : '<input type="checkbox" class="rowCheck" data-id="' + a.id + '"' + (selected.has(a.id) ? ' checked' : '') + ' />';
+        const click = dummy ? '' : ' data-clickable="' + a.id + '"';
+        const exp = dummy ? ' · <span style="color:#FF4D3D;border:1px solid rgba(255,77,61,0.2);padding:1px 6px;border-radius:9999px;background:rgba(255,77,61,0.08);">' + a.expiredReason + '</span>' : '';
+        return '<tr class="' + cls + '"' + click + ' title="' + title + '"><td>' + chk + '</td><td><span style="color:' + (dummy ? '#6B6B6B' : '#E8E8E8') + ';font-weight:500;">' + a.title + '</span><br><span style="font-size:11px;color:#6B6B6B;">' + a.company + (a.dateApplied ? ' · ' + a.dateApplied : '') + exp + '</span></td><td><span class="status-pill ' + statusCls[a.status] + '">' + statusLabel[a.status] + '</span></td><td>' + duePill(a) + '</td><td><span class="prio ' + prioCls + '">' + (dummy ? '—' : prio) + '</span></td></tr>';
+      }).join('');
+      const live = apps.filter(a => !a.archived && !a.dummy);
+      const cold = apps.filter(a => !a.archived && a.dummy).length;
+      const bySt = {}, dueToday = live.filter(a => a.nextAction === todayISO()).length;
+      live.forEach(a => bySt[a.status] = (bySt[a.status] || 0) + 1);
+      document.getElementById('protoCounts').innerHTML = '<b>' + live.length + ' live</b> · ' + Object.entries(bySt).map(([k, v]) => statusLabel[k] + ' ' + v).join(' · ') + ' · <span style="color:#FF4D3D;">' + dueToday + ' due today</span> · <span style="color:#6B6B6B;">' + cold + ' expired sample</span>';
+      document.getElementById('protoHint').textContent = 'First 6 rows clickable, rest are sample expired';
+      document.getElementById('selectAll').onchange = e => { const rows = out.filter(r => !r.dummy); if (e.target.checked) rows.forEach(r => selected.add(r.id)); else selected.clear(); render(); };
+      body.querySelectorAll('.rowCheck').forEach(cb => cb.onclick = e => { e.stopPropagation(); const id = parseInt(cb.dataset.id); if (cb.checked) selected.add(id); else selected.delete(id); render(); });
+      body.querySelectorAll('[data-clickable]').forEach(tr => tr.onclick = () => openDrawer(parseInt(tr.dataset.clickable)));
+    }
+
+    function renderSpreadsheet() {
+      const body = document.getElementById('protoBody');
+      document.getElementById('protoHead').innerHTML = '<th>Job Title</th><th>Company</th><th>Status (free text)</th><th>Date Applied</th><th>Source</th><th>Contact</th><th>Notes</th><th>Next Step</th><th>Salary Range</th><th>Location</th><th>Contact Email</th>';
+      document.getElementById('protoBulkBar').style.display = 'none';
+      let data = ssApps;
+      if (searchQ) { const q = searchQ.toLowerCase(); data = data.filter(a => (a.title + ' ' + a.company).toLowerCase().includes(q)); }
+      body.innerHTML = data.map(a => {
+        const isAlert = a.notes.length > 80;
+        const noteCls = isAlert ? 'ss-note-alert' : 'ss-note-dim';
+        return '<tr style="background:#0A0A0A;"><td style="color:#E8E8E8;font-weight:500;">' + a.title + '</td><td style="color:#BDBDBD;">' + a.company + '</td><td><span class="ss-st-text">' + a.status + '</span></td><td style="color:#BDBDBD;">' + (a.dateApplied || '<span class="ss-stale">—</span>') + '</td><td class="ss-loc">' + a.source + '</td><td class="ss-loc">' + a.contact + '</td><td><span class="ss-cell-note ' + noteCls + '" title="' + a.notes.replace(/"/g, '&quot;') + '">' + a.notes + '</span></td><td class="ss-loc">' + a.nextStep + '</td><td class="ss-loc">' + a.salary + '</td><td class="ss-loc">' + a.location + '</td><td class="ss-loc">' + a.contactEmail + '</td></tr>';
+      }).join('');
+      document.getElementById('protoCounts').innerHTML = '<b>' + data.length + ' rows</b> · <span style="color:#FF4D3D;">No archive</span> · <span style="color:#6B6B6B;">Notes inline = clutter</span>';
+      document.getElementById('protoHint').innerHTML = 'Spreadsheets looked like this. Free-text status drifts. Notes grow. Nothing surfaces. <button onclick="document.querySelector(\'[data-view=queue]\').click()" style="background:#FF4D3D;color:#fff;border:none;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;margin-left:8px;">See the Focus Queue &rarr;</button>';
+    }
+
+    /* Pill filter + search + sort */
+    document.querySelectorAll('[data-pill]').forEach(btn => btn.onclick = () => {
+      document.querySelectorAll('[data-pill]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterStatus = btn.dataset.pill;
+      selected.clear();
+      render();
+    });
+    document.getElementById('protoSearch').oninput = e => { searchQ = e.target.value.trim(); render(); };
+    document.getElementById('protoSort').onchange = e => { sortKey = e.target.value; render(); };
+    document.getElementById('bulkClearBtn').onclick = () => { selected.clear(); render(); };
+    document.getElementById('bulkArchiveBtn').onclick = () => {
+      selected.forEach(id => { const a = apps.find(x => x.id === id); if (a && !a.dummy) a.archived = true; });
+      selected.clear(); render();
+    };
+
+    /* Toggle */
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.onclick = () => {
+      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.dataset.view;
+      document.getElementById('protoAppbar').style.display = currentView === 'spreadsheet' ? 'none' : 'flex';
+      document.getElementById('spotlight').style.display = currentView === 'spreadsheet' ? 'none' : 'flex';
+      if (currentView === 'spreadsheet') clearSpotlight();
+      render();
+    });
+
+    /* ===== DRAWER ===== */
+    function openDrawer(id) {
+      const a = apps.find(x => x.id === id);
+      if (!a || a.dummy) return;
+      document.getElementById('drawerId').value = a.id;
+      document.getElementById('drawerTitle').value = a.title;
+      document.getElementById('drawerCompany').value = a.company;
+      document.getElementById('drawerStatus').value = a.status;
+      document.getElementById('drawerNextAction').value = a.nextAction || '';
+      document.getElementById('drawerNotes').value = a.notes || '';
+      document.getElementById('drawer').classList.add('open');
+      document.getElementById('drawer').setAttribute('aria-hidden', 'false');
+    }
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      document.getElementById('drawer').setAttribute('aria-hidden', 'true');
+    }
+    document.getElementById('drawerClose').onclick = closeDrawer;
+    document.getElementById('drawerCancel').onclick = closeDrawer;
+    document.getElementById('drawerBackdrop').onclick = closeDrawer;
+    document.getElementById('drawerSave').onclick = () => {
+      const id = parseInt(document.getElementById('drawerId').value);
+      const a = apps.find(x => x.id === id);
+      if (!a) return;
+      a.title = document.getElementById('drawerTitle').value.trim() || a.title;
+      a.company = document.getElementById('drawerCompany').value.trim() || a.company;
+      a.status = document.getElementById('drawerStatus').value;
+      a.nextAction = document.getElementById('drawerNextAction').value || '';
+      a.notes = document.getElementById('drawerNotes').value;
+      closeDrawer(); render();
+    };
+
+    /* ===== FEATURE SPOTLIGHT ===== */
+    const features = [
+      { id: 'pipeline', icon: 'fa-solid fa-layer-group', name: '7-State Pipeline', desc: 'Closed-set taxonomy', detail: 'Status started as free text. It drifted into dozens of variations with no consistency. A closed set of 7 states (Saved, Applied, Phone Screen, Interview, Offer, Reject, Withdrawn) covers nearly all applications. Each state maps to a concrete next action, not just a label.', targets: ['#protoAppbar .pill'] },
+      { id: 'priority', icon: 'fa-solid fa-arrow-down-1-9', name: 'Priority Ranking', desc: 'Derived, not tagged', detail: 'Computed from funnel depth, due proximity, and recency. Warm stages surface; cold trails sink.', targets: ['.prio'] },
+      { id: 'search', icon: 'fa-solid fa-magnifying-glass', name: 'Search & Sort', desc: 'One-click recall', detail: 'The spreadsheet needed three manual steps (filter, sort, scan) to find what was due. One search + one sort replaces that. Search recalls by company/title. Sort ranks by Next Action, Priority, Date, Company, or Status.', targets: ['#protoSearch', '#protoSort'] },
+      { id: 'drawer', icon: 'fa-solid fa-note-sticky', name: 'Notes Layering', desc: 'Detail on demand', detail: 'Notes lived inline in the spreadsheet. Clutter grew with every entry. A drawer keeps the table scannable. Detail on demand, one extra click, zero visual noise.', targets: ['#drawer'] },
+      { id: 'archive', icon: 'fa-solid fa-box-archive', name: 'Archive & Cold Trails', desc: 'Soft-delete, not gone', detail: 'Spreadsheets have no archive. Rows pile up forever. Soft-archive hides cold trails without deleting them. History stays for recall; queue stays quiet. The 6 dimmed rows in this demo are expired to show the pattern.', targets: ['.row-dummy'] },
+    ];
+
+    const spotList = document.getElementById('spotList');
+    const spotDetail = document.getElementById('spotDetail');
+    let activeSpot = null;
+
+    features.forEach(f => {
+      const card = document.createElement('div');
+      card.className = 'spot-card';
+      card.dataset.feature = f.id;
+      card.innerHTML = '<h4><i class="' + f.icon + '" style="margin-right:6px;color:#FF4D3D;font-size:0.75rem;"></i>' + f.name + '</h4><p>' + f.desc + '</p>';
+      card.onclick = () => {
+        if (activeSpot === f.id) { clearSpotlight(); return; }
+        activeSpot = f.id;
+        spotList.querySelectorAll('.spot-card').forEach(c => c.classList.toggle('active', c.dataset.feature === f.id));
+        spotDetail.innerHTML = '<div class="spot-title">' + f.name + '</div><p>' + f.detail + '</p>';
+        f.targets.forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
+            el.style.transition = 'box-shadow 0.3s';
+            el.style.boxShadow = '0 0 0 3px rgba(255,77,61,0.4)';
+          });
+        });
+      };
+      spotList.appendChild(card);
+    });
+
+    function clearSpotlight() {
+      activeSpot = null;
+      spotList.querySelectorAll('.spot-card').forEach(c => c.classList.remove('active'));
+      spotDetail.innerHTML = '<div class="spot-title">Click a feature</div><p>Explore the design decisions behind each part of the queue.</p>';
+      document.querySelectorAll('#demoPanel [style*="box-shadow"]').forEach(el => el.style.boxShadow = 'none');
+    }
+
+    /* ===== GUIDED WALKTHROUGH ===== */
+    const tourSteps = [
+      { title: 'Seven states, no free text', msg: 'Status used to drift as free text across hundreds of rows. Every application now maps to one of seven states, and each state implies its next action.', target: '.row-live .status-pill', pos: 'top' },
+      { title: 'Next actions are dated', msg: 'Every row carries a next action with a due date. Today and overdue surface first, so follow-ups stop hiding in the noise.', target: '.row-live .due-pill', pos: 'top' },
+      { title: 'Priority is derived, not tagged', msg: 'Priority is computed from funnel depth and due proximity. Warm leads float up, cold trails sink. The table ranks, it does not just filter.', target: '.row-live .prio', pos: 'top' },
+      { title: 'Search and sort for recall', msg: 'The sheet needed filter, sort and scan to find what was due. Here, type a company or title, or re-sort by next action.', target: '#protoSearch', pos: 'bottom' },
+      { title: 'Notes live in a drawer', msg: 'Open any live row. Status, next action and the full follow-up context sit in a drawer, so the table stays scannable.', target: '.row-live', pos: 'right' },
+      { title: 'Expired rows archive softly', msg: 'The dimmed rows are cold trails. Select warm rows and Archive Selected to soft-delete: history stays, the queue stays short.', target: '.row-dummy', pos: 'top' },
+    ];
+    let tourIdx = -1;
+    const overlay = document.getElementById('walkOverlay');
+    const highlight = document.getElementById('walkHighlight');
+    const tooltip = document.getElementById('walkTooltip');
+    const walkBar = document.getElementById('walkBar');
+
+    document.getElementById('startTour').onclick = () => { if (tourIdx < 0) startTour(); else endTour(); };
+
+    function startTour() {
+      if (currentView !== 'queue') document.querySelector('[data-view="queue"]').click();
+      filterStatus = 'all'; searchQ = ''; sortKey = 'next_action'; selected.clear();
+      document.querySelectorAll('[data-pill]').forEach(b => b.classList.toggle('active', b.dataset.pill === 'all'));
+      document.getElementById('protoSearch').value = '';
+      document.getElementById('protoSort').value = 'next_action';
+      render();
+      tourIdx = 0;
+      overlay.classList.add('active');
+      document.getElementById('startTour').innerHTML = '<i class="fa-solid fa-xmark"></i> End tour';
+      showTourStep();
+    }
+
+    function endTour() {
+      tourIdx = -1;
+      overlay.classList.remove('active');
+      highlight.classList.remove('active');
+      highlight.style.cssText = '';
+      tooltip.style.display = 'none';
+      tooltip.classList.remove('tt-bottom', 'tt-top', 'tt-left', 'tt-right');
+      walkBar.style.display = 'none';
+      document.getElementById('startTour').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Tour the demo';
+    }
+
+    function showTourStep() {
+      if (tourIdx < 0 || tourIdx >= tourSteps.length) { endTour(); return; }
+      const step = tourSteps[tourIdx];
+      const panel = document.getElementById('demoPanel');
+      const wrap = panel.querySelector('.proto-table-wrap');
+      const targets = Array.from(panel.querySelectorAll(step.target));
+      if (!targets.length) { endTour(); return; }
+      const anchor = targets[0];
+      if (wrap.contains(anchor)) {
+        const er = anchor.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+        if (er.top < wr.top) wrap.scrollTop -= (wr.top - er.top);
+        else if (er.bottom > wr.bottom) wrap.scrollTop += (er.bottom - wr.bottom);
+      }
+      requestAnimationFrame(() => {
+        const pr = panel.getBoundingClientRect();
+        const rects = targets.map(t => t.getBoundingClientRect());
+        const top = Math.min(...rects.map(r => r.top)) - pr.top;
+        const bottom = Math.max(...rects.map(r => r.bottom)) - pr.top;
+        const left = Math.min(...rects.map(r => r.left)) - pr.left;
+        const right = Math.max(...rects.map(r => r.right)) - pr.left;
+        const pad = 10;
+        highlight.style.top = (top - pad) + 'px';
+        highlight.style.left = (left - pad) + 'px';
+        highlight.style.width = ((right - left) + pad * 2) + 'px';
+        highlight.style.height = ((bottom - top) + pad * 2) + 'px';
+        highlight.classList.add('active');
+        tooltip.innerHTML = '<h4><span class="tt-step">' + String(tourIdx + 1).padStart(2, '0') + '</span>' + step.title + '</h4><p>' + step.msg + '</p>';
+        tooltip.style.display = 'block';
+        tooltip.classList.remove('tt-bottom', 'tt-top', 'tt-left', 'tt-right');
+        const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+        const barH = 56, m = 12;
+        let px = left, py = top, arrow = 'tt-top';
+        if (step.pos === 'bottom') { py = bottom + m; arrow = 'tt-bottom'; if (py + th > pr.height - barH - 8) { py = top - th - m; arrow = 'tt-top'; } }
+        else if (step.pos === 'right') { px = right + m; arrow = 'tt-right'; if (px + tw > pr.width - 8) { px = left - tw - m; arrow = 'tt-left'; if (px < 8) { px = left; py = bottom + m; arrow = 'tt-bottom'; } } }
+        else { py = top - th - m; arrow = 'tt-top'; if (py < 8) { py = bottom + m; arrow = 'tt-bottom'; } }
+        px = Math.max(8, Math.min(px, pr.width - tw - 8));
+        py = Math.max(8, Math.min(py, pr.height - th - barH - 8));
+        tooltip.style.left = px + 'px';
+        tooltip.style.top = py + 'px';
+        tooltip.classList.add(arrow);
+        const isLast = tourIdx === tourSteps.length - 1;
+        walkBar.innerHTML = '<span class="step-label"><strong>' + (tourIdx + 1) + ' / ' + tourSteps.length + '</strong>&nbsp;&nbsp;' + step.title + '</span><span class="step-actions"><button onclick="endTour()">Skip</button><button onclick="prevTour()"' + (tourIdx === 0 ? ' disabled style="opacity:0.35"' : '') + '>&#8592;&nbsp;Prev</button><button class="walk-primary" onclick="nextTour()">' + (isLast ? 'Done' : 'Next&nbsp;&#8594;') + '</button></span>';
+        walkBar.style.display = 'flex';
+      });
+    }
+
+    window.nextTour = () => { tourIdx++; if (tourIdx >= tourSteps.length) endTour(); else showTourStep(); };
+    window.prevTour = () => { if (tourIdx > 0) { tourIdx--; showTourStep(); } };
+    window.endTour = endTour;
+
+    /* ===== INIT ===== */
+    document.getElementById('protoAppbar').style.display = 'none';
+    render();
+  </script>
+</body>
+</html>
